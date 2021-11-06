@@ -1,4 +1,4 @@
-package dao.entity;
+package domain.entity;
 
 import java.util.Objects;
 
@@ -11,6 +11,7 @@ public class UserDTO {
 
     public UserDTO() {
     }
+
 
     public int getId() {
         return id;
@@ -67,22 +68,22 @@ public class UserDTO {
 
     public static class UserDTOBuilder {
         UserDTO userDTO;
-
-        public UserDTOBuilder() {
+        public UserDTOBuilder(){
             userDTO = new UserDTO();
         }
 
-        public UserDTOBuilder setID(int id) {
+        public UserDTOBuilder setID(int id)
+        {
             userDTO.setId(id);
             return this;
         }
-
-        public UserDTOBuilder setUsername(String username) {
+        public UserDTOBuilder setUsername(String username)
+        {
             userDTO.setUserName(username);
             return this;
         }
-
-        public UserDTOBuilder setLastname(String lastname) {
+        public UserDTOBuilder setLastname(String lastname)
+        {
             userDTO.setLastName(lastname);
             return this;
         }
@@ -91,15 +92,16 @@ public class UserDTO {
             userDTO.setFirstName(firstname);
             return this;
         }
-
         public UserDTOBuilder setRole(String role) {
             userDTO.setRole(role);
             return this;
         }
-
-        public UserDTO create() {
+        public UserDTO create()
+        {
             return userDTO;
         }
+
+
 
 
     }

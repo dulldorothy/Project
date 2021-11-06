@@ -1,4 +1,4 @@
-package dao.entity;
+package domain.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +82,7 @@ public class User {
     }
 
     public static class UserBuilder {
-        User user;
+       User user;
         public UserBuilder(){
             user = new User();
         }
@@ -129,7 +129,6 @@ public class User {
     private void setId(int id) {
         this.id = id;
     }
-
 
     public List<Object> userToListOfParameters() {
         List<Object> resultList = new ArrayList<>();

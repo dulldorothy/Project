@@ -1,8 +1,10 @@
 package service.impl;
 
 import dao.database.impl.DAOFactory;
+import domain.entity.User;
+import domain.entity.UserDTO;
 import service.UserService;
-import service.entity.UserDTO;
+
 import service.validator.ServiceValidator;
 
 import java.util.Map;
@@ -15,14 +17,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserByLoginAndPassword(String login, String password) {
         DAOFactory daoFactory = new DAOFactory();
-        dao.entity.UserDTO dto = daoFactory.getUserDAO().getUserByLoginAndPass(login ,password);
-        UserDTO user = castUserDaoToService(dto);
-        return user;
+        UserDTO dto = daoFactory.getUserDAO().getUserByLoginAndPass(login ,password);
+
+        return dto;
     }
 
     @Override
     public boolean saveUser(Map<String, String> userMap) {
-        dao.entity.User user = new dao.entity.User.UserBuilder()
+        User user = new User.UserBuilder()
                 .setFirstname(userMap.get(FIRSTNAME))
                 .setLastname(userMap.get(LASTNAME))
                 .setUsername(userMap.get(USERNAME))
@@ -87,7 +89,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserByID(int id) {
         DAOFactory daoFactory = new DAOFactory();
-        UserDTO result = castUserDaoToService(daoFactory.getUserDAO().getUserByID(id));
+        UserDTO result = daoFactory.getUserDAO().getUserByID(id);
         return result;
     }
 

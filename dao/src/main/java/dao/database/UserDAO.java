@@ -1,7 +1,8 @@
 package dao.database;
 
-import dao.entity.User;
-import dao.entity.UserDTO;
+
+import domain.entity.User;
+import domain.entity.UserDTO;
 
 public interface UserDAO {
     boolean saveUser(User user);

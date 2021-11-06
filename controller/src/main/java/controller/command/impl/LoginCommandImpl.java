@@ -2,7 +2,8 @@ package controller.command.impl;
 
 import controller.command.Command;
 import dao.database.impl.DAOFactory;
-import dao.entity.UserDTO;
+import domain.entity.UserDTO;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

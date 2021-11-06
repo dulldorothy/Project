@@ -3,7 +3,7 @@ package dao.database.impl;
 import dao.database.ConnectionPool;
 
 import dao.database.LotsDAO;
-import dao.entity.Lot;
+import domain.entity.Lot;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -176,12 +176,16 @@ public class LotsDAOImpl implements LotsDAO {
     private List<Lot> resultSetToListOfLots(ResultSet set) throws SQLException {
         List<Lot> result = new ArrayList<>();
         while (set.next()) {
-            Lot item = new Lot(set.getInt("id"), set.getInt("user_owner_id"));
-            item.setPrice(set.getInt("price"));
-            item.setStatus(set.getString("is_active_status"));
-            item.setTitle(set.getString("title"));
-            item.setStatus(set.getString("lot_type"));
-            item.setTime_of_expiration(set.getTimestamp("time_of_expiration"));
+            Lot item = new Lot.LotBuilder()
+                    .setId(set.getInt("id"))
+                    .setPrice(set.getInt("price"))
+                    .setTagList(set.getString("tag_list"))
+                    .setStatus(set.getString("is_active_status"))
+                    .setTitle(set.getString("title"))
+                    .setTimeOfExpiration(set.getTimestamp("time_of_expiration"))
+                    .setType(set.getString("lot_type"))
+                    .setUserOwnerID(set.getInt("user_owner_id"))
+                    .create();
             result.add(item);
 
         }

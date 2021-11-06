@@ -1,6 +1,7 @@
 package dao.database;
 
-import dao.entity.Lot;
+
+import domain.entity.Lot;
 
 import java.util.List;
 

@@ -3,8 +3,8 @@ package dao.database.impl;
 import dao.database.ConnectionPool;
 import dao.database.UserDAO;
 import dao.database.exeptions.UserDAOExeption;
-import dao.entity.User;
-import dao.entity.UserDTO;
+import domain.entity.User;
+import domain.entity.UserDTO;
 
 
 import java.sql.Connection;
@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
-
-
 
 
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id = ?;";
@@ -30,6 +28,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String SET_ROLE_BY_ID = "UPDATE users SET role = ? WHERE id = ?;";
 
     ConnectionPool connectionPool;
+
     public UserDAOImpl(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
@@ -214,12 +213,13 @@ public class UserDAOImpl implements UserDAO {
             throw new UserDAOExeption("No such login or password!");
         }
 
-        return new UserDTO(
-                resultSet.getInt("id"),
-                resultSet.getString("username"),
-                resultSet.getString("lastname"),
-                resultSet.getString("firstname"),
-                resultSet.getString("role"));
+        return new UserDTO.UserDTOBuilder()
+                .setFirstname(resultSet.getString("firstname"))
+                .setLastname(resultSet.getString("lastname"))
+                .setUsername(resultSet.getString("username"))
+                .setRole(resultSet.getString("role"))
+                .setID(resultSet.getInt("id")).create();
+
 
     }
 

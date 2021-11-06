@@ -1,4 +1,4 @@
-package service.entity;
+package domain.entity;
 
 
 import java.sql.Timestamp;
@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Lot {
-    private final int id;
-    private final int userOwnerID;
+    private int id;
+    private int userOwnerID;
     private String title;
     private int price;
     private String type;
@@ -16,24 +16,10 @@ public class Lot {
     private Timestamp time_of_expiration;
     private String tagList;
 
-    public Lot(int id, int user_owner_id, String title, int price, String type, String status,
-               Timestamp time_of_expiration, String tagList) {
-        this.id = id;
-        this.userOwnerID = user_owner_id;
-        this.title = title;
-        this.price = price;
-        this.type = type;
-        this.status = status;
-        this.time_of_expiration = time_of_expiration;
-        this.tagList = tagList;
+    public Lot() {
+
     }
 
-
-    public Lot(int id, int user_owner_id) {
-        this.id = id;
-        this.userOwnerID = user_owner_id;
-        this.title = "Untitled";
-    }
 
     public int getId() {
         return id;
@@ -83,6 +69,18 @@ public class Lot {
         this.time_of_expiration = time_of_expiration;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setUserOwnerID(int userOwnerID) {
+        this.userOwnerID = userOwnerID;
+    }
+
+    public void setTagList(String tagList) {
+        this.tagList = tagList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,8 +110,8 @@ public class Lot {
                 ", time_of_expiration=" + time_of_expiration +
                 '}';
     }
-    public List<Object> LotToListOfParameters()
-    {
+
+    public List<Object> LotToListOfParameters() {
         List<Object> resultList = new ArrayList<>();
         resultList.add(userOwnerID);
         resultList.add(title);
@@ -123,5 +121,60 @@ public class Lot {
         resultList.add(tagList);
         return resultList;
     }
+
+    public static class LotBuilder {
+        Lot lot;
+
+        public LotBuilder() {
+            lot = new Lot();
+        }
+
+        public LotBuilder setTitle(String title) {
+            lot.setTitle(title);
+            return this;
+        }
+
+        public LotBuilder setPrice(int price) {
+            lot.setPrice(price);
+            return this;
+        }
+
+        public LotBuilder setId(int id) {
+            lot.setId(id);
+            return this;
+        }
+
+        public LotBuilder setStatus(String status) {
+            lot.setStatus(status);
+            return this;
+        }
+
+        public LotBuilder setUserOwnerID(int id) {
+            lot.setUserOwnerID(id);
+            return this;
+        }
+
+        public LotBuilder setType(String type) {
+            lot.setType(type);
+            return this;
+        }
+        public LotBuilder setTimeOfExpiration(Timestamp timeOfExpiration)
+        {
+            lot.setTime_of_expiration(timeOfExpiration);
+            return this;
+        }
+        public LotBuilder setTagList(String tags)
+        {
+            lot.setTagList(tags);
+            return this;
+        }
+
+        public Lot create() {
+            return lot;
+        }
+
+
+    }
+
 
 }
