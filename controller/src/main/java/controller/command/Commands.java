@@ -8,7 +8,7 @@ public enum Commands {
     GO_TO_PAGE(new GoToPageCommandImpl()),
     LOG_OUT(new LogOutCommandImpl()),
     GO_TO_FULL_CATALOG(new GoToFullCatalog()),
-    ERROR_PAGE(new );
+    ERROR_PAGE(new ErrorPage());
 
     private Command command;
 

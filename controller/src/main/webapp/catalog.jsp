@@ -16,7 +16,7 @@
     <div class="main-container">
         <div class="category-container">
             <div class="category-element">
-                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=goToFullCatalog" class="category-link"><img src="pic/чайник.png" alt="" class="category-image"></a>
+                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_full_catalog" class="category-link"><img src="pic/чайник.png" alt="" class="category-image"></a>
                 <span class="category-name">Kithcen things</span>
             </div>
             <div class="category-element">
@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-   
+    <a href="${pageContext.request.contextPath}/Controller?page=lotcreation&command=goToPage"></a>
     <%@ include file="footer.jsp" %>
 </body>
 </html>

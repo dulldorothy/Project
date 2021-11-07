@@ -1,6 +1,7 @@
 package controller.command.impl;
 
 import controller.command.Command;
+import controller.command.Router;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,9 +11,10 @@ import java.io.IOException;
 
 public class LogOutCommandImpl implements Command {
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         session.invalidate();
         resp.sendRedirect("index");
+        return null;
     }
 }

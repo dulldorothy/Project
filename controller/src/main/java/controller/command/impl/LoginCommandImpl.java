@@ -1,6 +1,7 @@
 package controller.command.impl;
 
 import controller.command.Command;
+import controller.command.Router;
 import dao.database.impl.DAOFactory;
 import domain.entity.UserDTO;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
 public class LoginCommandImpl implements Command {
 
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession(true);
 
@@ -34,7 +35,7 @@ public class LoginCommandImpl implements Command {
         session.setAttribute("firstname", user.getFirstName());
 
         resp.sendRedirect("userpage.jsp");
-
+        return null;
 
 
 

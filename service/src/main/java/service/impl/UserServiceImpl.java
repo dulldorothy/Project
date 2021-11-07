@@ -93,14 +93,5 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-    private UserDTO castUserDaoToService(dao.entity.UserDTO a)
-    {
-        return new UserDTO.UserDTOBuilder()
-                .setID(a.getId())
-                .setFirstname(a.getFirstName())
-                .setLastname(a.getLastName())
-                .setUsername(a.getUserName())
-                .setRole(a.getRole())
-                .create();
-    }
+
 }

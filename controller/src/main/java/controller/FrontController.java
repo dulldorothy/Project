@@ -1,10 +1,10 @@
 package controller;
 
 import controller.command.Command;
-import controller.command.impl.GoToPageCommandImpl;
-import controller.command.impl.LogOutCommandImpl;
-import controller.command.impl.LoginCommandImpl;
-import controller.command.impl.RegisterCommandImpl;
+import controller.command.CommandFactory;
+import controller.command.Router;
+
+
 
 
 import javax.servlet.ServletException;
@@ -12,19 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class FrontController extends HttpServlet {
 
-    Map<String, Command> comMap =new HashMap<>();
-
     @Override
-    public void init() throws ServletException {
-        comMap.put("login", new LoginCommandImpl());
-        comMap.put("register", new RegisterCommandImpl());
-        comMap.put("logout", new LogOutCommandImpl());
-        comMap.put("goToPage", new GoToPageCommandImpl());
+    public void init() {
+
     }
 
     @Override
@@ -36,28 +30,33 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doExecute(req, resp);
-     }
+    }
 
 
     private void doExecute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Command command;
 
-        try{
+        Router router;
 
-            command = comMap.get(req.getParameter("command"));
-            command.execute(req, resp);
-        }catch (Exception e)
-        {
-            e.getStackTrace();
+        CommandFactory commandFactory = new CommandFactory();
+
+        Command command = commandFactory.createCommand(req);
+        router = command.execute(req, resp);
+
+            switch (router.getRouteType()) {
+            case FORWARD: {
+                req.getRequestDispatcher(router.getPagePath()).forward(req, resp);
+                break;
+            }
+            case REDIRECT: {
+                resp.sendRedirect(req.getContextPath() + router.getPagePath());
+                break;
+            }
+            default:{
+                resp.sendRedirect(req.getContextPath() + "error.jsp");
+            }
         }
 
         //TODO body code
-
-        System.out.println(req.getParameter("username"));
-        System.out.println(req.getParameter("password"));
-        System.out.println(req.getParameter("command"));
-
-
 
 
 

@@ -91,6 +91,7 @@ public class LotsDAOImpl implements LotsDAO {
             for (Lot item : result) {
                 System.out.println(item);
             }
+            return result;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {

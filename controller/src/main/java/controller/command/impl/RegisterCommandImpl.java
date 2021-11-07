@@ -1,6 +1,7 @@
 package controller.command.impl;
 
 import controller.command.Command;
+import controller.command.Router;
 
 
 import javax.servlet.ServletException;
@@ -10,9 +11,9 @@ import java.io.IOException;
 
 public class RegisterCommandImpl implements Command {
     @Override
-    public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    public Router execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-
+    return null;
 
     }
 }
