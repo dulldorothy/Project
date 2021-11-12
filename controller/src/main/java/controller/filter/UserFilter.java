@@ -19,11 +19,11 @@ public class UserFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
 
-        if(session.getAttribute("username") == null  && session.getAttribute("user_role") == null)
+        if(session.getAttribute("user") == null)
         {
-            req.getRequestDispatcher("login").forward(req,resp);
+            req.getRequestDispatcher("login.jsp").forward(req,resp);
         }
-        chain.doFilter(req, resp);
+
     }
 
     @Override

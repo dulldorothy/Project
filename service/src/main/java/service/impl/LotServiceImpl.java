@@ -6,6 +6,7 @@ import service.LotsService;
 
 
 import java.util.List;
+import java.util.Map;
 
 public class LotServiceImpl implements LotsService {
 
@@ -28,7 +29,14 @@ public class LotServiceImpl implements LotsService {
     }
 
     @Override
-    public boolean saveLot(List<Object> lotParameters, int userID) {
+    public boolean saveLot(Map<String, String> lotMap) {
+        Lot lot = new Lot.LotBuilder()
+                .setPrice(Integer.parseInt(lotMap.get("price")))
+                .setTitle(lotMap.get("title"))
+                .setUserOwnerID(Integer.parseInt(lotMap.get("user_owner_id")))
+                .setDescription("description")
+                .create();
+
         return false;
     }
 

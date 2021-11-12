@@ -6,9 +6,11 @@ import java.util.Locale;
 public class CommandFactory {
 
 
-    private CommandFactory commandFactory;
+    private static CommandFactory commandFactory = new CommandFactory() ;
 
-    CommandFactory getInstance() {
+
+
+    public static CommandFactory getInstance() {
         return commandFactory;
     }
 
@@ -16,12 +18,12 @@ public class CommandFactory {
 
     public Command createCommand(HttpServletRequest request)
     {
-        String commandName =request.getParameter("command");
+        String commandName = request.getParameter("command");
         Command command;
         if (commandName != null)
         {
             try{
-                command =Commands.valueOf(commandName.toUpperCase(Locale.ROOT)).getCommand();
+                command =   Commands.valueOf(commandName.toUpperCase(Locale.ROOT)).getCommand();
             }catch (IllegalArgumentException e )
             {
                 command = Commands.ERROR_PAGE.getCommand();

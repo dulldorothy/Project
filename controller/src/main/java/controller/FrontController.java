@@ -1,17 +1,17 @@
 package controller;
 
-import controller.command.Command;
-import controller.command.CommandFactory;
-import controller.command.Router;
-
-
+import controller.command.*;
+import controller.exeptions.ControllerExeption;
+import service.exeption.ServiceExeption;
 
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
 
 
 public class FrontController extends HttpServlet {
@@ -34,30 +34,41 @@ public class FrontController extends HttpServlet {
 
 
     private void doExecute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        Router router;
-
-        CommandFactory commandFactory = new CommandFactory();
-
-        Command command = commandFactory.createCommand(req);
-        router = command.execute(req, resp);
-
+        try {
+            Router router;
+            try {
+                InputStream image = null;
+                Part part = req.getPart("imagefile");
+                if (part.getSize() != 0) {
+                    image = part.getInputStream();
+                }
+                UploadCommand uploadCommand = UploadCommandFactory.getInstance().createCommand(req);
+                router = uploadCommand.execute(req, image);
+            } catch (IllegalStateException | ServiceExeption e) {
+                Command command = CommandFactory.getInstance().createCommand(req);
+                router = command.execute(req, resp);
+            }
             switch (router.getRouteType()) {
-            case FORWARD: {
-                req.getRequestDispatcher(router.getPagePath()).forward(req, resp);
-                break;
+                case FORWARD: {
+                    req.getRequestDispatcher(router.getPagePath()).forward(req, resp);
+                    break;
+                }
+                case REDIRECT: {
+                    resp.sendRedirect(req.getContextPath() + router.getPagePath());
+                    break;
+                }
+                default: {
+                    resp.sendRedirect(req.getContextPath() + "error.jsp");
+                }
             }
-            case REDIRECT: {
-                resp.sendRedirect(req.getContextPath() + router.getPagePath());
-                break;
-            }
-            default:{
-                resp.sendRedirect(req.getContextPath() + "error.jsp");
-            }
+        }finally {
+            //todo
         }
-
-        //TODO body code
-
+//        } catch (ControllerException e) {
+//            req.setAttribute("errormessage", e);
+//            req.getRequestDispatcher("error.jsp").forward(req, resp);
+//
+//        }
 
 
     }

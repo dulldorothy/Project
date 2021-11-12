@@ -19,7 +19,7 @@
   
     <filter-mapping>
         <filter-name>userFilter</filter-name>
-        <url-pattern>/userpage</url-pattern>
+        <url-pattern>/Controller?page=userpage</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>frontController</servlet-name>
@@ -29,12 +29,6 @@
         <servlet-name>frontController</servlet-name>
         <url-pattern>/Controller</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>pageController</servlet-name>
-        <servlet-class>controller.PageController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>pageController</servlet-name>
-        <url-pattern>/pageController</url-pattern>
-    </servlet-mapping>
+
+
 </web-app>

@@ -28,10 +28,13 @@ public class UserServiceImpl implements UserService {
                 .setFirstname(userMap.get(FIRSTNAME))
                 .setLastname(userMap.get(LASTNAME))
                 .setUsername(userMap.get(USERNAME))
+                .setPassword(userMap.get(PASSWORD))
                 .setRole("user").create();
         if(!ServiceValidator.validate(user))
         {
+
             return false;
+
         }
         DAOFactory daoFactory = new DAOFactory();
         return daoFactory.getUserDAO().saveUser(user);

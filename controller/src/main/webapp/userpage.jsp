@@ -23,6 +23,8 @@
                 <p>Last Name: ${sessionScope.lastname}</p>
             </div>
             
+            <a href="${pageContext.request.contextPath}/Controller?command=logout">logout</a>
+            <a href="${pageContext.request.contextPath}/Controller?page=lotcreation&command=go_to_page">Create Lot</a>
         </div>
         
     </div>

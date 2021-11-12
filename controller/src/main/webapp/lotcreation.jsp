@@ -19,7 +19,14 @@
         <form action="Controller" method="post">
             <input type="text" name="title" placeholder="Title"/>
             <input type="number" name="price" placeholder="Price"/>
-            <input type="hidden" name="command" value="addLot">
+            <input type="hidden" name="command" value="create_lot"/>
+            <input type="radio" name="type" id="auction" value="auction"/>
+            <label for="auction"> Auction </label>
+            <input type="radio" name="type" value="marketLot"/>
+            <label for="marketLot"> "Buy now" lot </label>
+            <br>
+            <input width="100%" type="text" name="description" placeholder="description"/>
+
             <button type="submit">Save Lot</button>
 
         </form>

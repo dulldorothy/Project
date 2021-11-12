@@ -15,6 +15,19 @@ public class Lot {
     private String status;
     private Timestamp time_of_expiration;
     private String tagList;
+    private String description;
+
+    public String getTagList() {
+        return tagList;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Lot() {
 
@@ -166,6 +179,11 @@ public class Lot {
         public LotBuilder setTagList(String tags)
         {
             lot.setTagList(tags);
+            return this;
+        }
+        public LotBuilder setDescription(String description)
+        {
+            lot.setDescription(description);
             return this;
         }
 

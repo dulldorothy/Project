@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,14 +22,21 @@
              </ul>
             </div>
             <div class="log-navigator" id="userplaceholder">
-                <ul class="pages-list" id="log-reg">
-                    <li class="pages-element">   <a href="${pageContext.request.contextPath}/Controller?page=login&command=go_to_page" class="list-link">Login</a></li>
-                    <li class="pages-element"> <a href="${pageContext.request.contextPath}/Controller?page=register&command=go_to_page" class="list-link">Register</a></li>
-                </ul>
+               <c:choose>
+                   <c:when test="${sessionScope.user == null}">
+                    <ul class="pages-list" id="log-reg">
+                        <li class="pages-element">   <a href="${pageContext.request.contextPath}/Controller?page=login&command=go_to_page" class="list-link">Login</a></li>
+                        <li class="pages-element"> <a href="${pageContext.request.contextPath}/Controller?page=register&command=go_to_page" class="list-link">Register</a></li>
+                    </ul>
+                   </c:when>
+                   <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/Controller?page=userpage&command=go_to_page">${sessionScope.user.getUserName()}</a>
+                   </c:otherwise>
+               </c:choose>
                 
                 
             </div>
         </div>
     </nav>
 </header>
-<script defer type="module" src="js/js.js">    </script>
+

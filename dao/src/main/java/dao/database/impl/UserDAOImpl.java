@@ -2,7 +2,8 @@ package dao.database.impl;
 
 import dao.database.ConnectionPool;
 import dao.database.UserDAO;
-import dao.database.exeptions.UserDAOExeption;
+
+import dao.database.exeptions.DAOExeption;
 import domain.entity.User;
 import domain.entity.UserDTO;
 
@@ -57,7 +58,7 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID)) {
             ResultSet resultSet = setStatement(statement, parameters).executeQuery();
             return ResultSetToUser(resultSet);
-        } catch (SQLException | UserDAOExeption throwables) {
+        } catch (SQLException | DAOExeption throwables) {
             throwables.printStackTrace();
         } finally {
             connectionPool.releaseConnection(connection);
@@ -75,7 +76,7 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
             ResultSet resultSet = setStatement(statement, parameters).executeQuery();
             return ResultSetToUser(resultSet);
-        } catch (SQLException | UserDAOExeption throwables) {
+        } catch (SQLException | DAOExeption throwables) {
             throwables.printStackTrace();
         } finally {
             connectionPool.releaseConnection(connection);
@@ -207,10 +208,10 @@ public class UserDAOImpl implements UserDAO {
         return statement;
     }
 
-    private UserDTO ResultSetToUser(ResultSet resultSet) throws SQLException, UserDAOExeption {
+    private UserDTO ResultSetToUser(ResultSet resultSet) throws SQLException,DAOExeption {
 
         if (!resultSet.next()) {
-            throw new UserDAOExeption("No such login or password!");
+            throw new DAOExeption("No such login or password!");
         }
 
         return new UserDTO.UserDTOBuilder()
