@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean saveUser(User user) {
+    public boolean saveUser(User user) throws DAOExeption {
         List<Object> parameters = user.userToListOfParameters();
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(SAVE_USER)) {
@@ -43,32 +43,32 @@ public class UserDAOImpl implements UserDAO {
             setStatement(statement, parameters).execute();
             return true;
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+           throw new DAOExeption("Failed to add User to database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
-        return false;
+
     }
 
     @Override
-    public UserDTO getUserByID(int id) {
+    public UserDTO getUserByID(int id) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID)) {
             ResultSet resultSet = setStatement(statement, parameters).executeQuery();
             return ResultSetToUser(resultSet);
-        } catch (SQLException | DAOExeption throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwables) {
+            throw new DAOExeption("Failed to get User from database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
-        return null;
+
     }
 
 
     @Override
-    public UserDTO getUserByLoginAndPass(String login, String password) {
+    public UserDTO getUserByLoginAndPass(String login, String password) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(login);
         parameters.add(password);
@@ -76,16 +76,16 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_LOGIN_AND_PASSWORD)) {
             ResultSet resultSet = setStatement(statement, parameters).executeQuery();
             return ResultSetToUser(resultSet);
-        } catch (SQLException | DAOExeption throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwables) {
+            throw new DAOExeption("Failed to get User from database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
-        return null;
+
     }
 
     @Override
-    public boolean deleteUserByID(int id) {
+    public boolean deleteUserByID(int id) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
         Connection connection = connectionPool.getConnection();
@@ -93,15 +93,15 @@ public class UserDAOImpl implements UserDAO {
             setStatement(statement, parameters).executeUpdate();
             return true;
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new DAOExeption("Failed to delete User from database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
-        return false;
+
     }
 
     @Override
-    public boolean changeUserFirstNameByID(int id, String newUserFirstName) {
+    public boolean changeUserFirstNameByID(int id, String newUserFirstName) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(newUserFirstName);
         parameters.add(id);
@@ -109,15 +109,15 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement statement = connection.prepareStatement(SET_FIRSTNAME_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new DAOExeption("Failed to change user firstname", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
-        return false;
+
     }
 
     @Override
-    public boolean changeUserLastNameByID(int id, String newUserLastName) {
+    public boolean changeUserLastNameByID(int id, String newUserLastName) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(newUserLastName);
         parameters.add(id);
@@ -125,15 +125,15 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement statement = connection.prepareStatement(SET_LASTNAME_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new DAOExeption("Failed to change user lastname", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
-        return false;
+
     }
 
     @Override
-    public boolean changeUserRoleByID(int id, String newRole) {
+    public boolean changeUserRoleByID(int id, String newRole) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(newRole);
         parameters.add(id);
@@ -141,15 +141,15 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement statement = connection.prepareStatement(SET_ROLE_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new DAOExeption("Failed to change user role", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
-        return false;
+
     }
 
     @Override
-    public boolean changeUsernameByID(int id, String newUsername) {
+    public boolean changeUsernameByID(int id, String newUsername) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(newUsername);
         parameters.add(id);
@@ -157,15 +157,15 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement statement = connection.prepareStatement(SET_USERNAME_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new DAOExeption("Failed to change username", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
-        return false;
+
     }
 
     @Override
-    public boolean changeUserPasswordByID(int id, String password) {
+    public boolean changeUserPasswordByID(int id, String password) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(password);
         parameters.add(id);
@@ -173,15 +173,15 @@ public class UserDAOImpl implements UserDAO {
         try (PreparedStatement statement = connection.prepareStatement(SET_PASS_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new DAOExeption("Failed to change user password", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
-        return false;
+
     }
 
     @Override
-    public boolean userExistsByLoginAndPassword(String login, String password) {
+    public boolean userExistsByLoginAndPassword(String login, String password) throws DAOExeption {
         List<Object> param = new ArrayList<>();
         param.add(login);
         param.add(password);
@@ -190,9 +190,11 @@ public class UserDAOImpl implements UserDAO {
             ResultSet set = setStatement(statement, param).executeQuery();
             return set.next();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new DAOExeption("Failed to get user from database!",throwables);
+        }finally {
+            connectionPool.releaseConnection(connection);
         }
-        return false;
+
     }
 
     private PreparedStatement setStatement(PreparedStatement statement, List<Object> parameters) throws SQLException {
@@ -208,10 +210,10 @@ public class UserDAOImpl implements UserDAO {
         return statement;
     }
 
-    private UserDTO ResultSetToUser(ResultSet resultSet) throws SQLException,DAOExeption {
+    private UserDTO ResultSetToUser(ResultSet resultSet) throws SQLException {
 
         if (!resultSet.next()) {
-            throw new DAOExeption("No such login or password!");
+            throw new SQLException();
         }
 
         return new UserDTO.UserDTOBuilder()

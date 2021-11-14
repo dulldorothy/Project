@@ -1,8 +1,10 @@
 package service.impl;
 
+import dao.database.exeptions.DAOExeption;
 import dao.database.impl.DAOFactory;
 import domain.entity.Lot;
 import service.LotsService;
+import service.exeption.ServiceExeption;
 import service.validator.ServiceValidator;
 
 
@@ -15,7 +17,12 @@ public class LotServiceImpl implements LotsService {
     public List<Lot> getAllLots() {
         List<Lot> result;
         DAOFactory daoFactory = new DAOFactory();
-        List<Lot> lots = daoFactory.getLotsDAO().getAll();
+        List<Lot> lots = null;
+        try {
+            lots = daoFactory.getLotsDAO().getAll(1,1);
+        } catch (DAOExeption e) {
+            e.printStackTrace();
+        }
         return lots;
     }
 
@@ -23,26 +30,32 @@ public class LotServiceImpl implements LotsService {
     public List<Lot> getAllActiveLots() {
         List<Lot> result;
         DAOFactory daoFactory = new DAOFactory();
-        List<Lot> lots = daoFactory.getLotsDAO().getActiveLots();
+        List<Lot> lots = null;
+        try {
+            lots = daoFactory.getLotsDAO().getActiveLots(1,1);
+        } catch (DAOExeption e) {
+            e.printStackTrace();
+        }
         return lots;
     }
 
     @Override
-    public boolean deleteLotByID(int id) {
+    public boolean deleteLotByID(int id) throws ServiceExeption {
 
         DAOFactory daoFactory = new DAOFactory();
-        if (daoFactory.getLotsDAO().deleteLotById(id))
-        {
-            return true;
+
+        try{
+            return  daoFactory.getLotsDAO().deleteLotById(id);
+        } catch (DAOExeption daoExeption) {
+            throw new ServiceExeption("Failed to delete lot!", daoExeption);
         }
 
-        return false;
 
 
     }
 
     @Override
-    public boolean saveLot(Map<String, String> lotMap) {
+    public boolean saveLot(Map<String, String> lotMap) throws ServiceExeption {
         Lot lot = new Lot.LotBuilder()
                 .setPrice(Integer.parseInt(lotMap.get("price")))
                 .setTitle(lotMap.get("title"))
@@ -57,20 +70,21 @@ public class LotServiceImpl implements LotsService {
         }
         DAOFactory daoFactory = new DAOFactory();
 
-        if (daoFactory.getLotsDAO().saveLot(lot))
-        {
-            return true;
+        try{
+            return daoFactory.getLotsDAO().saveLot(lot);
+        } catch (DAOExeption daoExeption) {
+            throw new ServiceExeption("Failed to save lot!", daoExeption);
         }
-        return false;
+
     }
 
     @Override
     public boolean changeLotPriceByID(int id, int price) {
         DAOFactory daoFactory = new DAOFactory();
-        if (daoFactory.getLotsDAO().changeLotPriceById(id,price))
-        {
-            return true;
-        }
+//        if (daoFactory.getLotsDAO().changeLotPriceById(id,price))
+//        {
+//            return true;
+//        }
         return false;
 
     }
@@ -78,21 +92,21 @@ public class LotServiceImpl implements LotsService {
     @Override
     public boolean changeLotStatusByID(int id, String status) {
         DAOFactory daoFactory = new DAOFactory();
-        if (daoFactory.getLotsDAO().changeLotStatusById(id,status))
-        {
-            return true;
-        }
-
+//        if (daoFactory.getLotsDAO().changeLotStatusById(id,status))
+//        {
+//            return true;
+//        }
+//
         return false;
     }
 
     @Override
     public boolean changeLotTitleByID(int id, String title) {
         DAOFactory daoFactory = new DAOFactory();
-        if (daoFactory.getLotsDAO().changeLotTitleById(id,title))
-        {
-            return true;
-        }
+//        if (daoFactory.getLotsDAO().changeLotTitleById(id,title))
+//        {
+//            return true;
+//        }
         return false;
     }
 
