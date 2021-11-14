@@ -10,6 +10,7 @@ public interface LotsDAO {
     boolean deleteLotById(int id);
     List<Lot> getAll();
     List<Lot> getActiveLots();
+    List<Lot> getLotsByTag(String tag);
     boolean changeLotPriceById(int id, int price);
     boolean changeLotTitleById(int id, String title);
     boolean changeLotStatusById(int id, String status);

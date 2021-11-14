@@ -13,7 +13,7 @@ public class LotsDAOImpl implements LotsDAO {
 
     private static final String SAVE_LOT = "INSERT INTO lots (user_owner_id, title, price, lot_type,is_active_status, " +
             "time_of_expiration) " +
-            "VALUES(?,?,?,?,?);";
+            "VALUES(?,?,?,?,?);";//TODO rewrite SQL query
 
     private static final String DELETE_LOT_BY_ID = "DELETE FROM lots WHERE id = ?;";
     private static final String SELECT_ALL = "SELECT * FROM lots";
@@ -21,6 +21,7 @@ public class LotsDAOImpl implements LotsDAO {
     private static final String CHANGE_PRICE_BY_ID = "UPDATE lots SET price = ? WHERE id = ?;";
     private static final String CHANGE_TITLE_BY_ID = "UPDATE lots SET title = ? WHERE id = ?;";
     private static final String CHANGE_STATUS_BY_ID = "UPDATE lots SET is_active_status = ? WHERE id = ?;";
+    private static final String SELECT_LOTS_BY_TAG = "SELECT * FROM lots WHERE tagList LIKE ?";
     ConnectionPool connectionPool;
 
     public LotsDAOImpl(ConnectionPool connectionPool) {
@@ -86,6 +87,28 @@ public class LotsDAOImpl implements LotsDAO {
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(SELECT_ACTIVE_LOTS)) {
             ResultSet set = setStatement(statement, null).executeQuery();
+            result = resultSetToListOfLots(set);
+
+            for (Lot item : result) {
+                System.out.println(item);
+            }
+            return result;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            connectionPool.releaseConnection(connection);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Lot> getLotsByTag(String tag) {
+        List<Lot> result;
+        List<Object> parameters = new ArrayList<>();
+        parameters.add("%," + tag + ",%");
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_LOTS_BY_TAG)) {
+            ResultSet set = setStatement(statement, parameters).executeQuery();
             result = resultSetToListOfLots(set);
 
             for (Lot item : result) {

@@ -26,7 +26,8 @@
             <label for="marketLot"> "Buy now" lot </label>
             <br>
             <input width="100%" type="text" name="description" placeholder="description"/>
-
+            <input type="text" name="tagList" placeholder="Tag list"/>
+            <input type="file" name="image"/>
             <button type="submit">Save Lot</button>
 
         </form>
