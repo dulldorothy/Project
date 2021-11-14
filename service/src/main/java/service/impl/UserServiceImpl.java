@@ -1,10 +1,12 @@
 package service.impl;
 
+import dao.database.exeptions.DAOExeption;
 import dao.database.impl.DAOFactory;
 import domain.entity.User;
 import domain.entity.UserDTO;
 import service.UserService;
 
+import service.exeption.ServiceExeption;
 import service.validator.ServiceValidator;
 
 import java.util.Map;
@@ -15,85 +17,118 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDTO getUserByLoginAndPassword(String login, String password) {
+    public UserDTO getUserByLoginAndPassword(String login, String password) throws ServiceExeption {
         DAOFactory daoFactory = new DAOFactory();
-        UserDTO dto = daoFactory.getUserDAO().getUserByLoginAndPass(login ,password);
+        UserDTO dto = null;
+        try {
+            return daoFactory.getUserDAO().getUserByLoginAndPass(login ,password);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to get user from database by login and password", e);
+        }
 
-        return dto;
+
     }
 
     @Override
-    public boolean saveUser(Map<String, String> userMap) {
+    public boolean saveUser(Map<String, String> userMap) throws ServiceExeption {
         User user = new User.UserBuilder()
                 .setFirstname(userMap.get(FIRSTNAME))
                 .setLastname(userMap.get(LASTNAME))
                 .setUsername(userMap.get(USERNAME))
                 .setPassword(userMap.get(PASSWORD))
                 .setRole("user").create();
+
         if(!ServiceValidator.validate(user))
         {
-
-            return false;
-
+           throw new ServiceExeption("User validation failed");
         }
+
         DAOFactory daoFactory = new DAOFactory();
-        return daoFactory.getUserDAO().saveUser(user);
+        try {
+            return daoFactory.getUserDAO().saveUser(user);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to save user", e);
+        }
     }
 
     @Override
-    public boolean changeUserFirstName(UserDTO user, String firstName) {
+    public boolean changeUserFirstName(UserDTO user, String firstName) throws ServiceExeption {
         if (!ServiceValidator.validate(firstName)){
-            return false;
+            throw new ServiceExeption("Failed to validate firstname");
         }
         DAOFactory daoFactory = new DAOFactory();
-        return daoFactory.getUserDAO().changeUserFirstNameByID(user.getId(), firstName);
+        try {
+            return daoFactory.getUserDAO().changeUserFirstNameByID(user.getId(), firstName);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to change firstname", e);
+        }
     }
 
     @Override
-    public boolean changeUserLastName(UserDTO user, String lastName) {
+    public boolean changeUserLastName(UserDTO user, String lastName) throws ServiceExeption {
         if (!ServiceValidator.validate(lastName)){
-            return false;
+            throw new ServiceExeption("Failed to validate lastname");
         }
         DAOFactory daoFactory = new DAOFactory();
-        return daoFactory.getUserDAO().changeUserLastNameByID(user.getId(), lastName);
+        try {
+            return daoFactory.getUserDAO().changeUserLastNameByID(user.getId(), lastName);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to change lastname",e);
+        }
     }
 
     @Override
-    public boolean changeUserRole(UserDTO user, String role) {
+    public boolean changeUserRole(UserDTO user, String role) throws ServiceExeption {
         if (!ServiceValidator.validate(role))
         {
-            return false;
+            throw new ServiceExeption("Failed to validate user role");
         }
         DAOFactory daoFactory = new DAOFactory();
 
-        return  daoFactory.getUserDAO().changeUserRoleByID(user.getId(), role);
+        try {
+            return  daoFactory.getUserDAO().changeUserRoleByID(user.getId(), role);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to change user role",e );
+        }
     }
 
     @Override
-    public boolean changeUserPassword(UserDTO user, String oldPassword, String newPassword) {
+    public boolean changeUserPassword(UserDTO user, String oldPassword, String newPassword) throws ServiceExeption {
         if (!ServiceValidator.validate(newPassword))
         {
-            return false;
+            throw new ServiceExeption("Failed to validate password");
         }
         DAOFactory daoFactory = new DAOFactory();
 
-        return  daoFactory.getUserDAO().changeUserPasswordByID(user.getId(), newPassword);
+        try {
+            return  daoFactory.getUserDAO().changeUserPasswordByID(user.getId(), newPassword);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to change user password", e);
+        }
     }
 
     @Override
-    public boolean checkUserIfExistsByLoginAndPass(String login, String pass) {
+    public boolean checkUserIfExistsByLoginAndPass(String login, String pass) throws ServiceExeption {
         if(!ServiceValidator.validate(login) || !ServiceValidator.validate(pass)){
-            return false;
+            throw new ServiceExeption("User validation failed");
         }
         DAOFactory daoFactory = new DAOFactory();
-        return daoFactory.getUserDAO().userExistsByLoginAndPassword(login,pass);
+        try {
+            return daoFactory.getUserDAO().userExistsByLoginAndPassword(login,pass);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to get user by login and password", e);
+        }
     }
 
     @Override
-    public UserDTO getUserByID(int id) {
+    public UserDTO getUserByID(int id) throws ServiceExeption {
         DAOFactory daoFactory = new DAOFactory();
-        UserDTO result = daoFactory.getUserDAO().getUserByID(id);
-        return result;
+        try {
+            return daoFactory.getUserDAO().getUserByID(id);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to get user by id",e);
+        }
+
     }
 
 

@@ -19,9 +19,9 @@ public class GoToFullCatalog implements Command {
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Lot> resultLots;
         LotsService service = new LotServiceImpl();
-        resultLots = service.getAllActiveLots();
-        req.setAttribute("Lots", resultLots);
-        req.getRequestDispatcher("searchresult.jsp").forward(req, resp);
+//        resultLots = service.getAllActiveLots();
+//        req.setAttribute("Lots", resultLots);
+//        req.getRequestDispatcher("searchresult.jsp").forward(req, resp);
         Router router = new Router("searchresult.jsp", Router.RouteType.FORWARD);
         return router;
     }

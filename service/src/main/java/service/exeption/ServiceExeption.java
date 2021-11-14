@@ -9,4 +9,8 @@ public class ServiceExeption extends Exception{
     public ServiceExeption(String message, DAOExeption daoExeption) {
         super(message);
     }
+
+    public ServiceExeption(String message) {
+        super(message);
+    }
 }

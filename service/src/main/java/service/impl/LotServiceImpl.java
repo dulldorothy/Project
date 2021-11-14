@@ -14,44 +14,37 @@ import java.util.Map;
 public class LotServiceImpl implements LotsService {
 
     @Override
-    public List<Lot> getAllLots() {
+    public List<Lot> getAllLots() throws ServiceExeption {
         List<Lot> result;
         DAOFactory daoFactory = new DAOFactory();
         List<Lot> lots = null;
         try {
-            lots = daoFactory.getLotsDAO().getAll(1,1);
+            return daoFactory.getLotsDAO().getAll(1, 1);
         } catch (DAOExeption e) {
-            e.printStackTrace();
+            throw new ServiceExeption("Failed to get all lots from database", e);
         }
-        return lots;
     }
 
     @Override
-    public List<Lot> getAllActiveLots() {
+    public List<Lot> getAllActiveLots() throws ServiceExeption {
         List<Lot> result;
         DAOFactory daoFactory = new DAOFactory();
         List<Lot> lots = null;
         try {
-            lots = daoFactory.getLotsDAO().getActiveLots(1,1);
+            return daoFactory.getLotsDAO().getActiveLots(1, 1);
         } catch (DAOExeption e) {
-            e.printStackTrace();
+            throw new ServiceExeption("Failed to get all active lots", e);
         }
-        return lots;
     }
 
     @Override
     public boolean deleteLotByID(int id) throws ServiceExeption {
-
         DAOFactory daoFactory = new DAOFactory();
-
-        try{
-            return  daoFactory.getLotsDAO().deleteLotById(id);
+        try {
+            return daoFactory.getLotsDAO().deleteLotById(id);
         } catch (DAOExeption daoExeption) {
             throw new ServiceExeption("Failed to delete lot!", daoExeption);
         }
-
-
-
     }
 
     @Override
@@ -64,49 +57,49 @@ public class LotServiceImpl implements LotsService {
                 .setTagList("tagList")
                 .create();
 
-        if (!ServiceValidator.validate(lot))
-        {
-            return false;
+        if (!ServiceValidator.validate(lot)) {
+            throw new ServiceExeption("Lot validation failed");
         }
         DAOFactory daoFactory = new DAOFactory();
 
-        try{
+        try {
             return daoFactory.getLotsDAO().saveLot(lot);
         } catch (DAOExeption daoExeption) {
             throw new ServiceExeption("Failed to save lot!", daoExeption);
         }
-
     }
 
     @Override
-    public boolean changeLotPriceByID(int id, int price) {
+    public boolean changeLotPriceByID(int id, int price) throws ServiceExeption {
         DAOFactory daoFactory = new DAOFactory();
-//        if (daoFactory.getLotsDAO().changeLotPriceById(id,price))
-//        {
-//            return true;
-//        }
-        return false;
+        try {
+            return daoFactory.getLotsDAO().changeLotPriceById(id, price);
 
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to change lot price", e);
+        }
     }
 
     @Override
-    public boolean changeLotStatusByID(int id, String status) {
+    public boolean changeLotStatusByID(int id, String status) throws ServiceExeption {
         DAOFactory daoFactory = new DAOFactory();
-//        if (daoFactory.getLotsDAO().changeLotStatusById(id,status))
-//        {
-//            return true;
-//        }
-//
-        return false;
+        try {
+            return daoFactory.getLotsDAO().changeLotStatusById(id, status);
+
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to change lot status" ,e);
+        }
     }
 
     @Override
-    public boolean changeLotTitleByID(int id, String title) {
+    public boolean changeLotTitleByID(int id, String title) throws ServiceExeption {
         DAOFactory daoFactory = new DAOFactory();
-//        if (daoFactory.getLotsDAO().changeLotTitleById(id,title))
-//        {
-//            return true;
-//        }
+        try {
+            daoFactory.getLotsDAO().changeLotTitleById(id,title);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to change lot title",e);
+        }
+
         return false;
     }
 
