@@ -15,6 +15,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import static domain.entity.UserFields.*;
+
+
 public class UserDAOImpl implements UserDAO {
 
 
@@ -39,7 +43,6 @@ public class UserDAOImpl implements UserDAO {
         List<Object> parameters = user.userToListOfParameters();
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(SAVE_USER)) {
-            System.out.println("Gnida");
             setStatement(statement, parameters).execute();
             return true;
         } catch (SQLException throwables) {
@@ -217,11 +220,12 @@ public class UserDAOImpl implements UserDAO {
         }
 
         return new UserDTO.UserDTOBuilder()
-                .setFirstname(resultSet.getString("firstname"))
-                .setLastname(resultSet.getString("lastname"))
-                .setUsername(resultSet.getString("username"))
-                .setRole(resultSet.getString("role"))
-                .setID(resultSet.getInt("id")).create();
+                .setFirstname(resultSet.getString(FIRSTNAME))
+                .setLastname(resultSet.getString(LASTNAME))
+                .setUsername(resultSet.getString(USERNAME))
+                .setRole(resultSet.getString(ROLE))
+                .setID(resultSet.getInt(ID)).
+                create();
 
 
     }

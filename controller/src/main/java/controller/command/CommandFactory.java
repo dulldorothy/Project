@@ -3,6 +3,8 @@ package controller.command;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
+import static domain.entity.UserFields.*;
+
 public class CommandFactory {
 
 
@@ -18,7 +20,7 @@ public class CommandFactory {
 
     public Command createCommand(HttpServletRequest request)
     {
-        String commandName = request.getParameter("command");
+        String commandName = request.getParameter(COMMAND);
         Command command;
         if (commandName != null)
         {

@@ -11,7 +11,7 @@ import service.validator.ServiceValidator;
 
 import java.util.Map;
 
-import static service.UserFields.*;
+import static domain.entity.UserFields.*;
 
 public class UserServiceImpl implements UserService {
 
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
                 .setLastname(userMap.get(LASTNAME))
                 .setUsername(userMap.get(USERNAME))
                 .setPassword(userMap.get(PASSWORD))
-                .setRole("user").create();
+                .setRole(USER_ROLE).create();
 
         if(!ServiceValidator.validate(user))
         {

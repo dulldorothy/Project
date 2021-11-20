@@ -1,7 +1,7 @@
 package controller;
 
 import controller.command.*;
-import controller.exeptions.ControllerExeption;
+import controller.exeptions.CommandException;
 import service.exeption.ServiceExeption;
 
 
@@ -23,17 +23,25 @@ public class FrontController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doExecute(req, resp);
+        try {
+            doExecute(req, resp);
+        } catch (CommandException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doExecute(req, resp);
+        try {
+            doExecute(req, resp);
+        } catch (CommandException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    private void doExecute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void doExecute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         try {
             Router router;
             try {

@@ -11,6 +11,8 @@ import service.validator.ServiceValidator;
 import java.util.List;
 import java.util.Map;
 
+import static domain.entity.UserFields.*;
+
 public class LotServiceImpl implements LotsService {
 
     @Override
@@ -50,11 +52,11 @@ public class LotServiceImpl implements LotsService {
     @Override
     public boolean saveLot(Map<String, String> lotMap) throws ServiceExeption {
         Lot lot = new Lot.LotBuilder()
-                .setPrice(Integer.parseInt(lotMap.get("price")))
-                .setTitle(lotMap.get("title"))
-                .setUserOwnerID(Integer.parseInt(lotMap.get("user_owner_id")))
-                .setDescription("description")
-                .setTagList("tagList")
+                .setPrice(Integer.parseInt(lotMap.get(PRICE)))
+                .setTitle(lotMap.get(TITLE))
+                .setUserOwnerID(Integer.parseInt(lotMap.get(OWNER_ID)))
+                .setDescription(DESCRIPTION)
+                .setTagList(TAG_LIST)
                 .create();
 
         if (!ServiceValidator.validate(lot)) {

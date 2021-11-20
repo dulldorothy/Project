@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static domain.entity.UserFields.*;
 public class LotsDAOImpl implements LotsDAO {
 
     private static final String SAVE_LOT = "INSERT INTO lots (user_owner_id, title, price, lot_type,is_active_status, " +
@@ -200,14 +201,14 @@ public class LotsDAOImpl implements LotsDAO {
         List<Lot> result = new ArrayList<>();
         while (set.next()) {
             Lot item = new Lot.LotBuilder()
-                    .setId(set.getInt("id"))
-                    .setPrice(set.getInt("price"))
-                    .setTagList(set.getString("tag_list"))
-                    .setStatus(set.getString("is_active_status"))
-                    .setTitle(set.getString("title"))
-                    .setTimeOfExpiration(set.getTimestamp("time_of_expiration"))
-                    .setType(set.getString("lot_type"))
-                    .setUserOwnerID(set.getInt("user_owner_id"))
+                    .setId(set.getInt(ID))
+                    .setPrice(set.getInt(PRICE))
+                    .setTagList(set.getString(TAG_LIST))
+                    .setStatus(set.getString(LOT_STATUS))
+                    .setTitle(set.getString(TITLE))
+                    .setTimeOfExpiration(set.getTimestamp(EXPIRATION_TIME))
+                    .setType(set.getString(TYPE))
+                    .setUserOwnerID(set.getInt(OWNER_ID))
                     .create();
             result.add(item);
 

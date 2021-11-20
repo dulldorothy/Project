@@ -3,6 +3,8 @@ package controller.command;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
+import static domain.entity.UserFields.*;
+
 public class UploadCommandFactory {
     private static UploadCommandFactory instance = new UploadCommandFactory();
 
@@ -16,7 +18,7 @@ public class UploadCommandFactory {
 
 
     public UploadCommand createCommand(HttpServletRequest req) {
-        String commandName = req.getParameter("command");
+        String commandName = req.getParameter(COMMAND);
         UploadCommand command;
 
         if (commandName == null) {
