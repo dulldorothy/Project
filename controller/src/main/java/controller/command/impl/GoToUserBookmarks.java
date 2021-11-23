@@ -16,21 +16,20 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-public class GoToUserLots implements Command {
+public class GoToUserBookmarks implements Command {
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         HttpSession session = req.getSession();
-
         UserDTO user = (UserDTO) session.getAttribute("user");
-        int currentPage = Integer.parseInt(req.getParameter("currentPage")) - 1;
-        int numberOfPages;
         List<Lot> resultLots;
         LotsService service = new LotServiceImpl();
+        int currentPage = Integer.parseInt(req.getParameter("currentPage")) - 1;
+        int numberOfPages;
         try {
-            numberOfPages = service.getNUmberOfUserLotsPages(10, user.getId());
-            resultLots = service.getAllUserLots(currentPage * 10, 10, user.getId());
+            numberOfPages = service.getNumberOfUserBookmarkLots(10, user.getId());
+            resultLots = service.getUserBookmarkLots(currentPage * 10, 10, user.getId());
         } catch (ServiceExeption e) {
-            throw new CommandException("Get All active lots command failed",e );
+            throw new CommandException("Get All bookmark lots command failed",e );
         }
         req.setAttribute("numberOfPages", numberOfPages);
         req.setAttribute("Lots", resultLots);

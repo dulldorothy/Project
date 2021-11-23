@@ -20,12 +20,13 @@ import static domain.entity.UserFields.*;
 
 
 public class UserDAOImpl implements UserDAO {
-
-
+    private static final String GET_USER_ID_BY_LOGIN = "SELECT id FROM users WHERE login = ?;";
+    private static final String SET_USER_BOOKMARK = "INSERT INTO user_bookmarks (user_id, lots_id) VALUES (?, '');";
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id = ?;";
     private static final String SAVE_USER = "INSERT INTO users (username, pass, lastname, firstname, role, encodedImage) VALUES(?,?,?,?,?,?);";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?;";
     private static final String SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE username = ? AND pass = ?;";
+    private static final String SET_USERIMAGE_BY_ID = "UPDATE users SET encodedImage = ? WHERE id = ?;";
     private static final String SET_FIRSTNAME_BY_ID = "UPDATE users SET firstname = ? WHERE id = ?;";
     private static final String SET_LASTNAME_BY_ID = "UPDATE users SET lastname = ? WHERE id = ?;";
     private static final String SET_PASS_BY_ID = "UPDATE users SET pass = ? WHERE id = ?;";
@@ -46,11 +47,43 @@ public class UserDAOImpl implements UserDAO {
             setStatement(statement, parameters).execute();
             return true;
         } catch (SQLException throwables) {
-           throw new DAOExeption("Failed to add User to database!", throwables);
+            throw new DAOExeption("Failed to add User to database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
 
+    }
+
+    @Override
+    public boolean setUserBookmark(int id) throws DAOExeption {
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(id);
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(SET_USER_BOOKMARK)) {
+            setStatement(statement, parameters).execute();
+            return true;
+        } catch (SQLException throwables) {
+            throw new DAOExeption("Failed to add User to database!", throwables);
+        } finally {
+            connectionPool.releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public int getUserIDbyLogin(String login) throws DAOExeption {
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(login);
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(SET_USER_BOOKMARK)) {
+            ResultSet set = setStatement(statement, parameters).executeQuery();
+            set.next();
+
+            return set.getInt("id");
+        } catch (SQLException throwables) {
+            throw new DAOExeption("Failed to add User to database!", throwables);
+        } finally {
+            connectionPool.releaseConnection(connection);
+        }
     }
 
     @Override
@@ -168,6 +201,21 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public boolean changeUserImageByID(int id, String encodedImage) throws DAOExeption {
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(encodedImage);
+        parameters.add(id);
+        Connection connection = connectionPool.getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(SET_USERIMAGE_BY_ID)) {
+            return setStatement(statement, parameters).execute();
+        } catch (SQLException throwables) {
+            throw new DAOExeption("Failed to change image", throwables);
+        } finally {
+            connectionPool.releaseConnection(connection);
+        }
+    }
+
+    @Override
     public boolean changeUserPasswordByID(int id, String password) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(password);
@@ -193,8 +241,8 @@ public class UserDAOImpl implements UserDAO {
             ResultSet set = setStatement(statement, param).executeQuery();
             return set.next();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to get user from database!",throwables);
-        }finally {
+            throw new DAOExeption("Failed to get user from database!", throwables);
+        } finally {
             connectionPool.releaseConnection(connection);
         }
 

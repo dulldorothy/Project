@@ -30,6 +30,7 @@ public class RegisterCommandImpl implements Command {
         try {
             if(service.saveUser(userMap))
             {
+
                 router = new Router("login.jsp", Router.RouteType.REDIRECT);
             }else {
                 request.setAttribute("massage", "Invalid Fields");

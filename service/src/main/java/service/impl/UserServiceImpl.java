@@ -45,7 +45,10 @@ public class UserServiceImpl implements UserService {
 
         DAOFactory daoFactory = new DAOFactory();
         try {
-            return daoFactory.getUserDAO().saveUser(user);
+            daoFactory.getUserDAO().saveUser(user);
+            int id = daoFactory.getUserDAO().getUserIDbyLogin(userMap.get(USERNAME));
+            daoFactory.getUserDAO().setUserBookmark(id);
+            return true;
         } catch (DAOExeption e) {
             throw new ServiceExeption("Failed to save user", e);
         }
@@ -61,6 +64,17 @@ public class UserServiceImpl implements UserService {
             return daoFactory.getUserDAO().changeUserFirstNameByID(user.getId(), firstName);
         } catch (DAOExeption e) {
             throw new ServiceExeption("Failed to change firstname", e);
+        }
+    }
+
+    @Override
+    public boolean changeUserImage(UserDTO user, String encodedImage) throws ServiceExeption {
+
+        DAOFactory daoFactory = new DAOFactory();
+        try {
+            return daoFactory.getUserDAO().changeUserImageByID(user.getId(), encodedImage);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to change lastname",e);
         }
     }
 

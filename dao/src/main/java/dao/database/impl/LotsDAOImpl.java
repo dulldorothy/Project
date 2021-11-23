@@ -17,16 +17,23 @@ public class LotsDAOImpl implements LotsDAO {
     private static final String SAVE_LOT = "INSERT INTO lots (user_owner_id, title, price, is_active_status, " +
             "encodedimage,tag_list,description) " +
             "VALUES(?,?,?,?,?,?,?);";//TODO rewrite SQL query
+    private static final String GET_NUMBER_OF_USER_RECORDS = "SELECT COUNT(*) as column FROM lots WHERE user_owner_id = ?;";
+    private static final String GET_NUMBER_OF_USER_BOOKMARKS = "SELECT lots_id from user_bookmarks WHERE user_id = ?;";
+    private static final String ADD_LOT_TO_USER_BOOKMARK = "UPDATE user_bookmarks SET lots_id = ? WHERE user_id = ?";
+
     private static final String GET_NUMBER_OF_RECORDS = "SELECT COUNT(*) as column FROM lots WHERE is_active_status = 'active';";
     private static final String GET_NUMBER_OF_TAG_RECORDS = "SELECT COUNT(*) as column FROM lots WHERE is_active_status = 'active' AND tag_list = ?;";
     private static final String SELECT_LOT_BY_ID = "SELECT * FROM lots WHERE id = ?";
     private static final String DELETE_LOT_BY_ID = "DELETE FROM lots WHERE id = ?;";
     private static final String SELECT_ALL = "SELECT * FROM lots OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ;";
+    private static final String SELECT_ALL_USER_BOOLMARKS = "SELECT * FROM lots";
     private static final String SELECT_ACTIVE_LOTS = "SELECT * FROM lots WHERE is_active_status = 'active' OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
     private static final String CHANGE_PRICE_BY_ID = "UPDATE lots SET price = ? WHERE id = ?;";
     private static final String CHANGE_TITLE_BY_ID = "UPDATE lots SET title = ? WHERE id = ?;";
     private static final String CHANGE_STATUS_BY_ID = "UPDATE lots SET is_active_status = ? WHERE id = ?;";
     private static final String SELECT_LOTS_BY_TAG = "SELECT * FROM lots WHERE tag_list = ? OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ;";
+    private static final String SELECT_LOTS_BY_USER = "SELECT * FROM lots WHERE user_owner_id = ? OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ;";
+
     ConnectionPool connectionPool;
 
     public LotsDAOImpl(ConnectionPool connectionPool) {
@@ -62,6 +69,29 @@ public class LotsDAOImpl implements LotsDAO {
 
 
 
+    }
+
+    @Override
+    public boolean addLotToUserBookmark(int userID, int lotID) throws DAOExeption {
+        List<Object> parameters = new ArrayList<>();
+
+        String lotsID = getIDOfUserBookmarkLots(userID);
+        if (lotsID.contains(lotID + ";"))
+        {
+            throw new DAOExeption();//todo
+        }
+        lotsID = lotID + lotID +";";
+        parameters.add(lotsID);
+        parameters.add(userID);
+        Connection connection = connectionPool.getConnection();
+        try (
+                PreparedStatement statement = connection.prepareStatement(ADD_LOT_TO_USER_BOOKMARK)) {
+            return setStatement(statement, parameters).execute();
+        } catch (SQLException throwables) {
+            throw  new DAOExeption("Failed to change status!", throwables);
+        } finally {
+            connectionPool.releaseConnection(connection);
+        }
     }
 
     @Override
@@ -127,6 +157,44 @@ public class LotsDAOImpl implements LotsDAO {
     }
 
     @Override
+    public List<Lot> getAllUserLots(int offset, int recordsPerPage, int userID) throws DAOExeption {
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(userID);
+        parameters.add(offset);
+        parameters.add(recordsPerPage);
+        Connection connection = connectionPool.getConnection();
+        try(PreparedStatement statement = connection.prepareStatement(SELECT_LOTS_BY_USER))
+        {
+            ResultSet set = setStatement(statement,parameters).executeQuery();
+            return resultSetToListOfLots(set);
+        } catch (SQLException throwables) {
+            throw new DAOExeption();
+        }
+    }
+
+    @Override
+    public List<Lot> getAllUserBookmarkLots(int offset, int recordsPerPage, int userID) throws DAOExeption {
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(userID);
+        parameters.add(offset);
+        parameters.add(recordsPerPage);
+        String query = GET_NUMBER_OF_USER_BOOKMARKS;
+        for (String id: getIDOfUserBookmarkLots(userID).split(";"))
+        {
+            query = query + "WHERE id = " + id + "AND";
+        }
+        query = query.substring(0,query.length()-3) + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ;";
+        Connection connection = connectionPool.getConnection();
+        try(PreparedStatement statement = connection.prepareStatement(query))
+        {
+            ResultSet set = setStatement(statement,parameters).executeQuery();
+            return resultSetToListOfLots(set);
+        } catch (SQLException throwables) {
+            throw new DAOExeption();
+        }
+    }
+
+    @Override
     public Lot getLotByID(int id) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
@@ -137,6 +205,47 @@ public class LotsDAOImpl implements LotsDAO {
             return result.get(0);
         } catch (SQLException throwables) {
             throw  new DAOExeption("Failed to select lot!", throwables);
+        }finally {
+            connectionPool.releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public int getNumberOfUserLots(int userID) throws DAOExeption {
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(userID);
+        Connection connection = connectionPool.getConnection();
+
+        try(PreparedStatement statement = connection.prepareStatement(GET_NUMBER_OF_USER_RECORDS))
+        {
+
+            ResultSet set = setStatement(statement, parameters).executeQuery();
+            set.next();
+            return set.getInt("column");
+        } catch (SQLException throwables) {
+            throw  new DAOExeption("Failed to get number of user lots!", throwables);
+        }finally {
+            connectionPool.releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public String getIDOfUserBookmarkLots(int userID) throws DAOExeption {
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(userID);
+        Connection connection = connectionPool.getConnection();
+
+        try(PreparedStatement statement = connection.prepareStatement(GET_NUMBER_OF_USER_BOOKMARKS))
+        {
+
+            ResultSet set = setStatement(statement, parameters).executeQuery();
+            set.next();
+            String lotsID = set.getString("lots_id");
+            return  lotsID;
+
+
+        } catch (SQLException throwables) {
+            throw  new DAOExeption("Failed to get number of user lots!", throwables);
         }finally {
             connectionPool.releaseConnection(connection);
         }

@@ -29,9 +29,9 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public List<Lot> getAllActiveLots(int offset, int recordsPerPage) throws ServiceExeption {
-        List<Lot> result;
+
         DAOFactory daoFactory = new DAOFactory();
-        List<Lot> lots = null;
+
         try {
             return daoFactory.getLotsDAO().getActiveLots(offset, recordsPerPage);
         } catch (DAOExeption e) {
@@ -50,11 +50,50 @@ public class LotServiceImpl implements LotsService {
     }
 
     @Override
+    public List<Lot> getAllUserLots(int offset, int recordsPerPage, int userID) throws ServiceExeption {
+
+        DAOFactory daoFactory = new DAOFactory();
+
+        try
+        {
+            return daoFactory.getLotsDAO().getAllUserLots(offset,recordsPerPage, userID);
+
+        } catch (DAOExeption daoExeption) {
+            throw new ServiceExeption("Failed to get user lots");
+        }
+    }
+
+    @Override
+    public List<Lot> getUserBookmarkLots(int off, int recordsPerPage, int userID) throws ServiceExeption {
+        DAOFactory daoFactory = new DAOFactory();
+
+        try
+        {
+            return daoFactory.getLotsDAO().getAllUserBookmarkLots(off,recordsPerPage, userID);
+
+        } catch (DAOExeption daoExeption) {
+            throw new ServiceExeption("Failed to get user bookmark lots");
+        }
+    }
+
+    @Override
     public int getNumberOfTagPages(int recordPerPage, String tag) throws ServiceExeption {
         DAOFactory daoFactory = new DAOFactory();
         try
         {
             int result = daoFactory.getLotsDAO().getNumberOfActiveLotsByTag(tag);
+            return (int) Math.ceil(result/(double) recordPerPage);
+        } catch (DAOExeption daoExeption) {
+            throw new ServiceExeption("Failed to get number of records",daoExeption);
+        }
+    }
+
+    @Override
+    public int getNUmberOfUserLotsPages(int recordPerPage, int userID) throws ServiceExeption {
+        DAOFactory daoFactory = new DAOFactory();
+        try
+        {
+            int result = daoFactory.getLotsDAO().getNumberOfUserLots(userID);
             return (int) Math.ceil(result/(double) recordPerPage);
         } catch (DAOExeption daoExeption) {
             throw new ServiceExeption("Failed to get number of records",daoExeption);
@@ -68,6 +107,18 @@ public class LotServiceImpl implements LotsService {
         {
             int result = daoFactory.getLotsDAO().getNumberOfActiveLots();
             return (int) Math.ceil(result/(double) recordPerPage);
+        } catch (DAOExeption daoExeption) {
+            throw new ServiceExeption("Failed to get number of records",daoExeption);
+        }
+    }
+
+    @Override
+    public int getNumberOfUserBookmarkLots(int recordsPerPage, int userID) throws ServiceExeption {
+        DAOFactory daoFactory = new DAOFactory();
+        try
+        {
+            int result = daoFactory.getLotsDAO().getIDOfUserBookmarkLots(userID).split(";").length;
+            return (int) Math.ceil(result/(double) recordsPerPage);
         } catch (DAOExeption daoExeption) {
             throw new ServiceExeption("Failed to get number of records",daoExeption);
         }
@@ -114,6 +165,18 @@ public class LotServiceImpl implements LotsService {
             return daoFactory.getLotsDAO().saveLot(lot);
         } catch (DAOExeption daoExeption) {
             throw new ServiceExeption("Failed to save lot!", daoExeption);
+        }
+    }
+
+    @Override
+    public boolean addLotToUserBookmarks(int userID, int lotID) throws ServiceExeption {
+
+        DAOFactory daoFactory = new DAOFactory();
+        try {
+            return daoFactory.getLotsDAO().addLotToUserBookmark(userID, lotID);
+
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to change lot status" ,e);
         }
     }
 
