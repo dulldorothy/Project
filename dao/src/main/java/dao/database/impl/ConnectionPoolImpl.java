@@ -2,40 +2,49 @@ package dao.database.impl;
 
 import dao.database.ConnectionPool;
 import dao.database.DataBaseConnector;
+import dao.database.exeptions.DAOExeption;
+
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class ConnectionPoolImpl implements ConnectionPool {
+    private static ConnectionPool instance;
     private String url;
     private String user;
     private String pass;
-    private List<Connection> connectionPool;
-    private List<Connection> usedConnections = new ArrayList<>();
-    private static int INITIAL_POOL_SIZE = 10;
-
-    public static ConnectionPoolImpl create(String url,  String user,String pass){
-        List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
-        for (int i= 0; i < INITIAL_POOL_SIZE; i++)
-        {
-            pool.add(DataBaseConnector.getConnection(url,user, pass));
-        }
-        return new ConnectionPoolImpl(url,user,pass,pool);
-    }
+    private BlockingQueue<Connection> connectionPool;
+    private BlockingQueue<Connection> usedConnections;
+    private static int INITIAL_POOL_SIZE = 4;
 
 
-    public ConnectionPoolImpl(String url, String user, String pass, List<Connection> connectionPool) {
+
+    public ConnectionPoolImpl(String url, String user, String pass) {
         this.url = url;
         this.user = user;
         this.pass = pass;
-        this.connectionPool = connectionPool;
+
+        this.connectionPool = new ArrayBlockingQueue<>(INITIAL_POOL_SIZE);
+        this.usedConnections = new ArrayBlockingQueue<>(INITIAL_POOL_SIZE);
+
+        try {
+            for (int i = 0; i < INITIAL_POOL_SIZE; i++)
+                connectionPool.add(DataBaseConnector.getConnection(url, user,pass));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public Connection getConnection() {
-        Connection connection = connectionPool.remove(connectionPool.size() - 1);
-        usedConnections.add(connection);
+    public Connection getConnection() throws DAOExeption {
+        Connection connection;
+        try{
+            connection = connectionPool.take();
+            usedConnections.add(connection);
+        } catch (InterruptedException e) {
+            throw new DAOExeption();
+        }
         return connection;
     }
 
@@ -43,6 +52,14 @@ public class ConnectionPoolImpl implements ConnectionPool {
     public boolean releaseConnection(Connection connection) {
         connectionPool.add(connection);
         return usedConnections.remove(connection);
+    }
+    public static ConnectionPool getInstance(String url, String user, String pass)
+    {
+        if (instance == null)
+        {
+            instance= new ConnectionPoolImpl( url,  user,  pass);
+        }
+        return instance;
     }
 
     @Override

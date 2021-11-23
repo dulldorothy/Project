@@ -16,6 +16,7 @@ public class Lot {
     private Timestamp time_of_expiration;
     private String tagList;
     private String description;
+    private String image;
 
     public String getTagList() {
         return tagList;
@@ -33,6 +34,13 @@ public class Lot {
 
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public int getId() {
         return id;
@@ -129,9 +137,11 @@ public class Lot {
         resultList.add(userOwnerID);
         resultList.add(title);
         resultList.add(price);
-        resultList.add(type);
-        resultList.add(time_of_expiration);
+        resultList.add(status);
+        resultList.add(image);
         resultList.add(tagList);
+        resultList.add(description);// todo
+
         return resultList;
     }
 
@@ -186,7 +196,11 @@ public class Lot {
             lot.setDescription(description);
             return this;
         }
-
+        public LotBuilder setImage(String image)
+        {
+            lot.setImage(image);
+            return this;
+        }
         public Lot create() {
             return lot;
         }

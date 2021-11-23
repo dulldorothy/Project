@@ -15,12 +15,12 @@
     <div class="main-container">
         <div class="profile-container-wrapper">
             <div class="profile-pic-container">
-                <img src="https://previews.123rf.com/images/gesrey/gesrey1903/gesrey190300189/118727657-the-face-of-a-sleeping-cat-square-format-toned-close-up-.jpg" alt="" class="profile-pic">
+                <img src="data:image/jpg;base64,${sessionScope.user.image}" alt="" class="profile-pic">
             </div>
             <div class="profile-info-container">
-                <p>UserName: ${sessionScope.username}</p>
-                <p>First Name: ${sessionScope.firstname}</p>
-                <p>Last Name: ${sessionScope.lastname}</p>
+                <p>UserName: ${sessionScope.user.userName}</p>
+                <p>First Name: ${sessionScope.user.firstName}</p>
+                <p>Last Name: ${sessionScope.user.lastName}</p>
             </div>
             
             <a href="${pageContext.request.contextPath}/Controller?command=logout">logout</a>

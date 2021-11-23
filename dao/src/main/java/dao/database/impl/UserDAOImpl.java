@@ -23,7 +23,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id = ?;";
-    private static final String SAVE_USER = "INSERT INTO users (username, pass, lastname, firstname, role) VALUES(?,?,?,?,?);";
+    private static final String SAVE_USER = "INSERT INTO users (username, pass, lastname, firstname, role, encodedImage) VALUES(?,?,?,?,?,?);";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?;";
     private static final String SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE username = ? AND pass = ?;";
     private static final String SET_FIRSTNAME_BY_ID = "UPDATE users SET firstname = ? WHERE id = ?;";
@@ -224,8 +224,9 @@ public class UserDAOImpl implements UserDAO {
                 .setLastname(resultSet.getString(LASTNAME))
                 .setUsername(resultSet.getString(USERNAME))
                 .setRole(resultSet.getString(ROLE))
-                .setID(resultSet.getInt(ID)).
-                create();
+                .setID(resultSet.getInt(ID))
+                .setImage(resultSet.getString(IMAGE))
+                .create();
 
 
     }

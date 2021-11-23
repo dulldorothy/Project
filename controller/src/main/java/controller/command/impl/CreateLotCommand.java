@@ -2,6 +2,7 @@ package controller.command.impl;
 
 import controller.command.Router;
 import controller.command.UploadCommand;
+import controller.exeptions.CommandException;
 import controller.util.Base64Coder;
 
 import domain.entity.UserDTO;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 public class CreateLotCommand implements UploadCommand {
     @Override
-    public Router execute(HttpServletRequest request, InputStream image) throws IOException, ServletException, ServiceExeption {
+    public Router execute(HttpServletRequest request, InputStream image) throws IOException, ServletException, CommandException {
         HttpSession session = request.getSession();
         Map<String,String> lotMap = new HashMap<>();
 
@@ -28,24 +29,29 @@ public class CreateLotCommand implements UploadCommand {
         lotMap.put("price",request.getParameter("price"));
         lotMap.put("title",request.getParameter("title"));
         lotMap.put("user_owner_id",String.valueOf(user.getId()));
-        lotMap.put("tagList",request.getParameter("tagList"));
-        lotMap.put("description",request.getParameter(""));
+        lotMap.put("tag_list",request.getParameter("tags"));
+        lotMap.put("description",request.getParameter("description"));
         String encodedImage = null;
         if (image != null){
             encodedImage = Base64Coder.encode(image);
         }
-        lotMap.put("image", encodedImage);
+        lotMap.put("encodedImage", encodedImage);
 
         LotsService service = new LotServiceImpl();
-        if(service.saveLot(lotMap))
-        {
-            return new Router("lotpage.jsp", Router.RouteType.REDIRECT);
+        try {
+            service.saveLot(lotMap);
+            return new Router("Controller?user_id="+ user.getId()  + "&command=go_to_userlots", Router.RouteType.REDIRECT);
+        } catch (ServiceExeption e) {
+            request.setAttribute("errorMessage","Incorrect fields");
+            return new Router("lotcreation.jsp", Router.RouteType.FORWARD);
+
         }
-        request.setAttribute("errorMessage","Incorrect fields");
 
 
-        return new Router("lotcreation.jsp", Router.RouteType.FORWARD);
-        //TODO lotcreation page jsp
+
+
+
+
 
 
     }

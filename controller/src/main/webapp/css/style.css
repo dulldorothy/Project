@@ -62,3 +62,12 @@ div.profile-container-wrapper{
     justify-content: center;
     width: 80%;
 }
+
+.product_image{
+    height: 100px;
+    width: 100px;
+}
+
+.product_item{
+    display: flex;
+}

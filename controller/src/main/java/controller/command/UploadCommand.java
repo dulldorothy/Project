@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.exeptions.CommandException;
 import service.exeption.ServiceExeption;
 
 import javax.servlet.ServletException;
@@ -8,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public interface UploadCommand {
-    Router execute(HttpServletRequest request, InputStream inputStream) throws IOException, ServletException, ServiceExeption;
+    Router execute(HttpServletRequest request, InputStream inputStream) throws IOException, ServletException, ServiceExeption, CommandException;
 
 
 }

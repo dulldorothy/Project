@@ -6,6 +6,8 @@ import service.exeption.ServiceExeption;
 
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +15,12 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 
+
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 1,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 100
+)
 
 public class FrontController extends HttpServlet {
 
@@ -46,13 +54,13 @@ public class FrontController extends HttpServlet {
             Router router;
             try {
                 InputStream image = null;
-                Part part = req.getPart("imagefile");
+                Part part = req.getPart("image");
                 if (part.getSize() != 0) {
                     image = part.getInputStream();
                 }
                 UploadCommand uploadCommand = UploadCommandFactory.getInstance().createCommand(req);
                 router = uploadCommand.execute(req, image);
-            } catch (IllegalStateException | ServiceExeption e) {
+            } catch (ServletException | ServiceExeption e) {
                 Command command = CommandFactory.getInstance().createCommand(req);
                 router = command.execute(req, resp);
             }

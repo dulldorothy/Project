@@ -10,7 +10,7 @@ public class DAOFactory {
     private final UserDAO userDAO;
 
     public DAOFactory() {
-        ConnectionPool connectionPool = ConnectionPoolImpl.create(DatabaseConfig.getDatabaseURL(),
+        ConnectionPool connectionPool = ConnectionPoolImpl.getInstance(DatabaseConfig.getDatabaseURL(),
                 DatabaseConfig.getLogin(), DatabaseConfig.getPassword());
         this.userDAO = new UserDAOImpl(connectionPool);
         this.lotsDAO = new LotsDAOImpl(connectionPool);

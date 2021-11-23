@@ -21,7 +21,7 @@ public class UserFields {
     public static final String TAG_LIST = "tag_list";
     public static final String PRICE = "price";
     public static final String EXPIRATION_TIME = " time_of_expiration";
-
+    public static final String IMAGE = "encodedImage";
 
     public static final String COMMAND = "command";
 

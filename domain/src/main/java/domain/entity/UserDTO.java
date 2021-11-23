@@ -9,6 +9,15 @@ public class UserDTO {
     private String firstName;
     private String role;
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    private String image;
     public UserDTO() {
     }
 
@@ -94,6 +103,11 @@ public class UserDTO {
         }
         public UserDTOBuilder setRole(String role) {
             userDTO.setRole(role);
+            return this;
+        }
+        public UserDTOBuilder setImage(String image)
+        {
+            userDTO.setImage(image);
             return this;
         }
         public UserDTO create()

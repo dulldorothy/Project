@@ -28,14 +28,58 @@ public class LotServiceImpl implements LotsService {
     }
 
     @Override
-    public List<Lot> getAllActiveLots() throws ServiceExeption {
+    public List<Lot> getAllActiveLots(int offset, int recordsPerPage) throws ServiceExeption {
         List<Lot> result;
         DAOFactory daoFactory = new DAOFactory();
         List<Lot> lots = null;
         try {
-            return daoFactory.getLotsDAO().getActiveLots(1, 1);
+            return daoFactory.getLotsDAO().getActiveLots(offset, recordsPerPage);
         } catch (DAOExeption e) {
             throw new ServiceExeption("Failed to get all active lots", e);
+        }
+    }
+
+    @Override
+    public List<Lot> getTagActiveLots(int offset, int recordsPerPage, String tag) throws ServiceExeption {
+        DAOFactory daoFactory = new DAOFactory();
+        try {
+            return daoFactory.getLotsDAO().getLotsByTag(offset, recordsPerPage,tag);
+        } catch (DAOExeption e) {
+            throw new ServiceExeption("Failed to get all active lots", e);
+        }
+    }
+
+    @Override
+    public int getNumberOfTagPages(int recordPerPage, String tag) throws ServiceExeption {
+        DAOFactory daoFactory = new DAOFactory();
+        try
+        {
+            int result = daoFactory.getLotsDAO().getNumberOfActiveLotsByTag(tag);
+            return (int) Math.ceil(result/(double) recordPerPage);
+        } catch (DAOExeption daoExeption) {
+            throw new ServiceExeption("Failed to get number of records",daoExeption);
+        }
+    }
+
+    @Override
+    public int getNumberOfPages(int recordPerPage) throws ServiceExeption {
+        DAOFactory daoFactory = new DAOFactory();
+        try
+        {
+            int result = daoFactory.getLotsDAO().getNumberOfActiveLots();
+            return (int) Math.ceil(result/(double) recordPerPage);
+        } catch (DAOExeption daoExeption) {
+            throw new ServiceExeption("Failed to get number of records",daoExeption);
+        }
+    }
+
+    @Override
+    public Lot getLotByID(int id) throws ServiceExeption {
+        DAOFactory daoFactory = new DAOFactory();
+        try{
+            return daoFactory.getLotsDAO().getLotByID(id);
+        } catch (DAOExeption daoExeption) {
+            throw new ServiceExeption("Failed to select lot", daoExeption);
         }
     }
 
@@ -55,8 +99,10 @@ public class LotServiceImpl implements LotsService {
                 .setPrice(Integer.parseInt(lotMap.get(PRICE)))
                 .setTitle(lotMap.get(TITLE))
                 .setUserOwnerID(Integer.parseInt(lotMap.get(OWNER_ID)))
-                .setDescription(DESCRIPTION)
-                .setTagList(TAG_LIST)
+                .setDescription(lotMap.get(DESCRIPTION))
+                .setStatus("active")
+                .setTagList(lotMap.get(TAG_LIST))
+                .setImage(lotMap.get(IMAGE))
                 .create();
 
         if (!ServiceValidator.validate(lot)) {

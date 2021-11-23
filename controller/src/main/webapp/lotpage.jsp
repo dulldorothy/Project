@@ -13,7 +13,13 @@
 <body>
     
     <%@ include file="header.jsp" %>
-
+    <h1>${requestScope.Lot.title}</h1>
+    <h2>${requestScope.Lot.price}</h2>
+    <div class="product_image">
+        <img class="product_image" src="data:image/jpg;base64,${requestScope.Lot.image}">
+        
+    </div>
+    <p>${requestScope.Lot.description}</p>
     <%@ include file="footer.jsp" %>
 </body>
 </html>
