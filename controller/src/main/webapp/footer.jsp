@@ -48,7 +48,7 @@
                 </ul>
             </div>
             <div class="part3">
-                <div class="copyright-link">&copy; 2021 ePay, Inc.
+                <div class="copyright-link"> A</div>
                 </div>
             </div>
         </div>

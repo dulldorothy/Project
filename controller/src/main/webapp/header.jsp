@@ -14,7 +14,7 @@
     <div id="product" data-prodnumber="${sessionScope.username}">
     <nav class="navigation"> 
         <div class="navigation-container">
-            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=go_to_page" class="header-logo"> ePay</a></div>
+            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=go_to_page" class="header-logo"> e</a></div>
             <div class="navigation-pages">
              <ul class="pages-list">
                  <li class="pages-element"><a href="${pageContext.request.contextPath}/Controller?page=catalog&command=go_to_page" class="header-logo"> Catalog</a></li>
