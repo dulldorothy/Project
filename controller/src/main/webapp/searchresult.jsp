@@ -32,7 +32,8 @@
     <div class="pagination">
         <div class="pag_body">
             <c:if test="${param.currentPage > 1}">
-                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_full_catalog&currentPage=${param.currentPage - 1}">
+                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=${param.command}&currentPage=${param.currentPage - 1}">
+                   
                     <div class="prev">
                         <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12"
                              viewBox="0 0 7 12">
@@ -50,7 +51,7 @@
                     </c:when>
                     <c:when test="${i > (param.currentPage - 3) && i < param.currentPage + 3}">
                         <div class="page_number">
-                            <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_full_catalog&currentPage=${i}">
+                            <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=${param.command}&currentPage=${i}">
                                     ${i}
                             </a>
                         </div>
@@ -58,7 +59,8 @@
                 </c:choose>
             </c:forEach>
             <c:if test="${param.currentPage lt requestScope.numberOfPages}">
-                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_full_catalog&currentPage=${param.currentPage + 1}">
+                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=${param.command}&currentPage=${param.currentPage + 1}">
+                    
                     <div class="next">
                         <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12"
                              viewBox="0 0 7 12">

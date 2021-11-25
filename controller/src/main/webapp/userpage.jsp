@@ -25,6 +25,7 @@
             
             <a href="${pageContext.request.contextPath}/Controller?command=logout">logout</a>
             <a href="${pageContext.request.contextPath}/Controller?page=lotcreation&command=go_to_page">Create Lot</a>
+            <a href="${pageContext.request.contextPath}/Controller?page=lotcreation&command=go_to_user_lots&currentPage=1">user Lots</a>
         </div>
         
     </div>

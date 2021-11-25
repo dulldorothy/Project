@@ -18,15 +18,15 @@ public class LotsDAOImpl implements LotsDAO {
             "encodedimage,tag_list,description) " +
             "VALUES(?,?,?,?,?,?,?);";//TODO rewrite SQL query
     private static final String GET_NUMBER_OF_USER_RECORDS = "SELECT COUNT(*) as column FROM lots WHERE user_owner_id = ?;";
-    private static final String GET_NUMBER_OF_USER_BOOKMARKS = "SELECT lots_id from user_bookmarks WHERE user_id = ?;";
-    private static final String ADD_LOT_TO_USER_BOOKMARK = "UPDATE user_bookmarks SET lots_id = ? WHERE user_id = ?";
+    private static final String GET_NUMBER_OF_USER_BOOKMARKS = "SELECT marked_lots_id from user_bookmarks WHERE user_id = ?;";
+    private static final String ADD_LOT_TO_USER_BOOKMARK = "UPDATE user_bookmarks SET marked_lots_id  = ? WHERE user_id = ?";
 
     private static final String GET_NUMBER_OF_RECORDS = "SELECT COUNT(*) as column FROM lots WHERE is_active_status = 'active';";
     private static final String GET_NUMBER_OF_TAG_RECORDS = "SELECT COUNT(*) as column FROM lots WHERE is_active_status = 'active' AND tag_list = ?;";
     private static final String SELECT_LOT_BY_ID = "SELECT * FROM lots WHERE id = ?";
     private static final String DELETE_LOT_BY_ID = "DELETE FROM lots WHERE id = ?;";
     private static final String SELECT_ALL = "SELECT * FROM lots OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ;";
-    private static final String SELECT_ALL_USER_BOOLMARKS = "SELECT * FROM lots";
+    private static final String SELECT_ALL_USER_BOOLMARKS = "SELECT * FROM lots WHERE";
     private static final String SELECT_ACTIVE_LOTS = "SELECT * FROM lots WHERE is_active_status = 'active' OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;";
     private static final String CHANGE_PRICE_BY_ID = "UPDATE lots SET price = ? WHERE id = ?;";
     private static final String CHANGE_TITLE_BY_ID = "UPDATE lots SET title = ? WHERE id = ?;";
@@ -78,10 +78,10 @@ public class LotsDAOImpl implements LotsDAO {
         String lotsID = getIDOfUserBookmarkLots(userID);
         if (lotsID.contains(lotID + ";"))
         {
-            throw new DAOExeption();//todo
+           return false;
         }
-        lotsID = lotID + lotID +";";
-        parameters.add(lotsID);
+        lotsID = lotsID + lotID +";";
+        parameters.add( lotsID);
         parameters.add(userID);
         Connection connection = connectionPool.getConnection();
         try (
@@ -175,15 +175,14 @@ public class LotsDAOImpl implements LotsDAO {
     @Override
     public List<Lot> getAllUserBookmarkLots(int offset, int recordsPerPage, int userID) throws DAOExeption {
         List<Object> parameters = new ArrayList<>();
-        parameters.add(userID);
         parameters.add(offset);
         parameters.add(recordsPerPage);
-        String query = GET_NUMBER_OF_USER_BOOKMARKS;
+        String query = SELECT_ALL_USER_BOOLMARKS;
         for (String id: getIDOfUserBookmarkLots(userID).split(";"))
         {
-            query = query + "WHERE id = " + id + "AND";
+            query = query + "  id = " + id + " OR";
         }
-        query = query.substring(0,query.length()-3) + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ;";
+        query = query.substring(0,query.length()-2) + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ;";
         Connection connection = connectionPool.getConnection();
         try(PreparedStatement statement = connection.prepareStatement(query))
         {
@@ -240,7 +239,7 @@ public class LotsDAOImpl implements LotsDAO {
 
             ResultSet set = setStatement(statement, parameters).executeQuery();
             set.next();
-            String lotsID = set.getString("lots_id");
+            String lotsID = set.getString("marked_lots_id");
             return  lotsID;
 
 

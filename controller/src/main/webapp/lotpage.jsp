@@ -19,6 +19,11 @@
         <img class="product_image" src="data:image/jpg;base64,${requestScope.Lot.image}">
         
     </div>
+    <form method="get" action="Controller">
+        <input type="hidden" name="command" value="add_to_bookmark" >
+        <input type="hidden" name="lot_id" value="${requestScope.Lot.id}" >
+        <button type="submit"> add to bookmarks </button>
+    </form>
     <p>${requestScope.Lot.description}</p>
     <%@ include file="footer.jsp" %>
 </body>

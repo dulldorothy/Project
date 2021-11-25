@@ -40,7 +40,7 @@ public class CreateLotCommand implements UploadCommand {
         LotsService service = new LotServiceImpl();
         try {
             service.saveLot(lotMap);
-            return new Router("Controller?user_id="+ user.getId()  + "&command=go_to_userlots", Router.RouteType.REDIRECT);
+            return new Router("Controller?page=lotcreation&command=go_to_user_lots&currentPage=1", Router.RouteType.REDIRECT);
         } catch (ServiceExeption e) {
             request.setAttribute("errorMessage","Incorrect fields");
             return new Router("lotcreation.jsp", Router.RouteType.FORWARD);

@@ -20,8 +20,8 @@ import static domain.entity.UserFields.*;
 
 
 public class UserDAOImpl implements UserDAO {
-    private static final String GET_USER_ID_BY_LOGIN = "SELECT id FROM users WHERE login = ?;";
-    private static final String SET_USER_BOOKMARK = "INSERT INTO user_bookmarks (user_id, lots_id) VALUES (?, '');";
+    private static final String GET_USER_ID_BY_LOGIN = "SELECT id FROM users WHERE username = ?;";
+    private static final String SET_USER_BOOKMARK = "INSERT INTO user_bookmarks (user_id, marked_lots_id) VALUES (?, '');";
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id = ?;";
     private static final String SAVE_USER = "INSERT INTO users (username, pass, lastname, firstname, role, encodedImage) VALUES(?,?,?,?,?,?);";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?;";
@@ -74,7 +74,7 @@ public class UserDAOImpl implements UserDAO {
         List<Object> parameters = new ArrayList<>();
         parameters.add(login);
         Connection connection = connectionPool.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(SET_USER_BOOKMARK)) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_USER_ID_BY_LOGIN)) {
             ResultSet set = setStatement(statement, parameters).executeQuery();
             set.next();
 

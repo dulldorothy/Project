@@ -18,6 +18,13 @@
             <div class="navigation-pages">
              <ul class="pages-list">
                  <li class="pages-element"><a href="${pageContext.request.contextPath}/Controller?page=catalog&command=go_to_page" class="header-logo"> Catalog</a></li>
+                 <c:choose>
+                   <c:when test="${sessionScope.user == null}">
+                   </c:when>
+                   <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_user_bookmarks&currentPage=1">Bookmarks</a>
+                   </c:otherwise>
+               </c:choose>
                  
              </ul>
             </div>

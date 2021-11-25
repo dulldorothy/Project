@@ -71,3 +71,17 @@ div.profile-container-wrapper{
 .product_item{
     display: flex;
 }
+.pagination{
+
+}
+.pag_body{
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page_number_active, .page_number, .prev, .next{
+    margin-right: 5px;
+}
+

@@ -16,7 +16,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
     private String pass;
     private BlockingQueue<Connection> connectionPool;
     private BlockingQueue<Connection> usedConnections;
-    private static int INITIAL_POOL_SIZE = 4;
+    private static int INITIAL_POOL_SIZE = 50;
 
 
 
