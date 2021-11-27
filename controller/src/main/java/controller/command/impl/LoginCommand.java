@@ -8,7 +8,7 @@ import controller.exeptions.CommandException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.UserService;
-import service.exeption.ServiceExeption;
+import service.exeption.ServiceException;
 import service.impl.UserServiceImpl;
 
 
@@ -22,7 +22,7 @@ import java.io.IOException;
 import static domain.entity.UserFields.*;
 public class LoginCommand implements Command {
 
-
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
@@ -43,8 +43,9 @@ public class LoginCommand implements Command {
                 req.getRequestDispatcher("login.jsp").forward(req, resp);
                 router = new Router("login.jsp", Router.RouteType.REDIRECT);
             }
-        } catch (ServiceExeption e) {
-            throw new CommandException("Login command failed", e);
+        } catch (ServiceException e) {
+            logger.error("Failed to execute LOGIN  Command", e);
+            throw new CommandException(e);
         }
         return router;
 

@@ -5,12 +5,12 @@ import javafx.scene.control.cell.TextFieldListCell;
 
 import java.lang.reflect.Executable;
 
-public class ServiceExeption extends Exception{
-    public ServiceExeption(String message, DAOExeption daoExeption) {
+public class ServiceException extends Exception{
+    public ServiceException(String message, DAOExeption daoExeption) {
         super(message);
     }
 
-    public ServiceExeption(String message) {
+    public ServiceException(String message) {
         super(message);
     }
 }

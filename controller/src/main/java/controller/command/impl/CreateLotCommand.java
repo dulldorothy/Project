@@ -6,8 +6,10 @@ import controller.exeptions.CommandException;
 import controller.util.Base64Coder;
 
 import domain.entity.UserDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.LotsService;
-import service.exeption.ServiceExeption;
+import service.exeption.ServiceException;
 import service.impl.LotServiceImpl;
 
 import javax.servlet.ServletException;
@@ -19,7 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CreateLotCommand implements UploadCommand {
-    @Override
+    private static final Logger logger = LogManager.getLogger();
+   @Override
     public Router execute(HttpServletRequest request, InputStream image) throws IOException, ServletException, CommandException {
         HttpSession session = request.getSession();
         Map<String,String> lotMap = new HashMap<>();
@@ -41,8 +44,9 @@ public class CreateLotCommand implements UploadCommand {
         try {
             service.saveLot(lotMap);
             return new Router("Controller?page=lotcreation&command=go_to_user_lots&currentPage=1", Router.RouteType.REDIRECT);
-        } catch (ServiceExeption e) {
+        } catch (ServiceException e) {
             request.setAttribute("errorMessage","Incorrect fields");
+            logger.error("Failed to execute CreateLotCommand Command", e);
             return new Router("lotcreation.jsp", Router.RouteType.FORWARD);
 
         }

@@ -5,8 +5,10 @@ import controller.command.Router;
 import controller.exeptions.CommandException;
 import domain.entity.Lot;
 import domain.entity.UserDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.LotsService;
-import service.exeption.ServiceExeption;
+import service.exeption.ServiceException;
 import service.impl.LotServiceImpl;
 
 import javax.servlet.ServletException;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class GoToUserLots implements Command {
+    private static final Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         HttpSession session = req.getSession();
@@ -29,8 +32,9 @@ public class GoToUserLots implements Command {
         try {
             numberOfPages = service.getNUmberOfUserLotsPages(10, user.getId());
             resultLots = service.getAllUserLots(currentPage * 10, 10, user.getId());
-        } catch (ServiceExeption e) {
-            throw new CommandException("Get All active lots command failed",e );
+        } catch (ServiceException e) {
+            logger.error("Failed to execute FullCatalog  Command", e);
+            throw new CommandException(e);
         }
         req.setAttribute("numberOfPages", numberOfPages);
         req.setAttribute("Lots", resultLots);

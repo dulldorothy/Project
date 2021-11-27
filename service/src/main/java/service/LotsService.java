@@ -3,28 +3,28 @@ package service;
 
 
 import domain.entity.Lot;
-import service.exeption.ServiceExeption;
+import service.exeption.ServiceException;
 
 import java.util.List;
 import java.util.Map;
 
 public interface LotsService {
-    List<Lot> getAllLots() throws ServiceExeption;
-    List<Lot> getAllActiveLots(int offset, int recordsPerPage) throws ServiceExeption;
-    List<Lot> getTagActiveLots(int offset, int recordsPerPage,String tag) throws ServiceExeption;
-    List<Lot> getAllUserLots(int offset, int recordsPerPage, int userID) throws ServiceExeption;
-    List<Lot> getUserBookmarkLots(int off, int recordsPerPage, int userID) throws ServiceExeption;
-    int getNumberOfTagPages(int recordPerPage, String tag) throws ServiceExeption;
-    int getNUmberOfUserLotsPages(int recordsPerPage, int userID) throws ServiceExeption;
-    int getNumberOfPages(int recordPerPage) throws ServiceExeption;
-    int getNumberOfUserBookmarkLots(int recordsPerPage, int userID) throws ServiceExeption;
-    Lot getLotByID(int id) throws ServiceExeption;
-    boolean deleteLotByID(int id) throws ServiceExeption;
-    boolean saveLot(Map<String,String> lotMap) throws ServiceExeption;
-    boolean addLotToUserBookmarks(int userID, int lotID) throws ServiceExeption;
-    boolean changeLotPriceByID(int id, int price) throws ServiceExeption;
-    boolean changeLotStatusByID(int id, String status) throws ServiceExeption;
-    boolean changeLotTitleByID(int id, String title) throws ServiceExeption;
+    List<Lot> getAllLots() throws ServiceException;
+    List<Lot> getAllActiveLots(int offset, int recordsPerPage) throws ServiceException;
+    List<Lot> getTagActiveLots(int offset, int recordsPerPage,String tag) throws ServiceException;
+    List<Lot> getAllUserLots(int offset, int recordsPerPage, int userID) throws ServiceException;
+    List<Lot> getUserBookmarkLots(int off, int recordsPerPage, int userID) throws ServiceException;
+    int getNumberOfTagPages(int recordPerPage, String tag) throws ServiceException;
+    int getNUmberOfUserLotsPages(int recordsPerPage, int userID) throws ServiceException;
+    int getNumberOfPages(int recordPerPage) throws ServiceException;
+    int getNumberOfUserBookmarkLots(int recordsPerPage, int userID) throws ServiceException;
+    Lot getLotByID(int id) throws ServiceException;
+    boolean deleteLotByID(int id) throws ServiceException;
+    boolean saveLot(Map<String,String> lotMap) throws ServiceException;
+    boolean addLotToUserBookmarks(int userID, int lotID) throws ServiceException;
+    boolean changeLotPriceByID(int id, int price) throws ServiceException;
+    boolean changeLotStatusByID(int id, String status) throws ServiceException;
+    boolean changeLotTitleByID(int id, String title) throws ServiceException;
 
 
 }

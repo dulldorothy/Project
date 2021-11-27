@@ -13,8 +13,9 @@ public enum Commands {
     GO_TO_USER_LOTS(new GoToUserLots()),
     ADD_TO_BOOKMARK(new AddLotToBookmarkCommand()),
     GO_TO_USER_BOOKMARKS(new GoToUserBookmarks()),
-
-    ERROR_PAGE(new ErrorPage());
+    DEFAULT(new GoToMainPageCommand()),
+    ERROR_PAGE(new ErrorPage()),
+    CHANGE_LOCALE(new ChangeLocaleCommand());
 
     private Command command;
 

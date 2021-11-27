@@ -1,6 +1,7 @@
 package controller.command;
 
 import controller.command.impl.CreateLotCommand;
+import controller.command.impl.GoToMainPageCommand;
 import controller.command.impl.RegisterCommandImpl;
 
 public enum UploadCommands {

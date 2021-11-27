@@ -19,7 +19,7 @@
              <ul class="pages-list">
                  <li class="pages-element"><a href="${pageContext.request.contextPath}/Controller?page=catalog&command=go_to_page" class="header-logo"> Catalog</a></li>
                  <c:choose>
-                   <c:when test="${sessionScope.user == null}">
+                   <c:when test="${sessionScope.user.role == 'guest'}">
                    </c:when>
                    <c:otherwise>
                         <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_user_bookmarks&currentPage=1">Bookmarks</a>
@@ -30,7 +30,7 @@
             </div>
             <div class="log-navigator" id="userplaceholder">
                <c:choose>
-                   <c:when test="${sessionScope.user == null}">
+                   <c:when test="${sessionScope.user.role == 'guest'}">
                     <ul class="pages-list" id="log-reg">
                         <li class="pages-element">   <a href="${pageContext.request.contextPath}/Controller?page=login&command=go_to_page" class="list-link">Login</a></li>
                         <li class="pages-element"> <a href="${pageContext.request.contextPath}/Controller?page=register&command=go_to_page" class="list-link">Register</a></li>

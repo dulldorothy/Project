@@ -3,10 +3,11 @@ package controller.command.impl;
 import controller.command.Command;
 import controller.command.Router;
 import controller.exeptions.CommandException;
-import domain.entity.User;
 import domain.entity.UserDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.LotsService;
-import service.exeption.ServiceExeption;
+import service.exeption.ServiceException;
 import service.impl.LotServiceImpl;
 
 import javax.servlet.ServletException;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AddLotToBookmarkCommand implements Command {
-
+    private static final Logger logger = LogManager.getLogger();
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         HttpSession session = req.getSession();
@@ -25,9 +26,10 @@ public class AddLotToBookmarkCommand implements Command {
         LotsService service =new LotServiceImpl();
         try {
             service.addLotToUserBookmarks(user.getId(), lotID);
-            return new Router("userpage.jsp", Router.RouteType.REDIRECT);
-        } catch (ServiceExeption serviceExeption) {
-            throw new CommandException("failed to add lot to user bookmarks" ,serviceExeption);
+            return new Router("Controller?page=userpage&command=go_to_page", Router.RouteType.REDIRECT);
+        } catch (ServiceException serviceException) {
+            logger.error("Failed to execute AddLotToBookmark Command", serviceException);
+            throw new CommandException();
         }
     }
 }

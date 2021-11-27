@@ -2,7 +2,7 @@ package controller;
 
 import controller.command.*;
 import controller.exeptions.CommandException;
-import service.exeption.ServiceExeption;
+import service.exeption.ServiceException;
 
 
 import javax.servlet.ServletException;
@@ -60,7 +60,7 @@ public class FrontController extends HttpServlet {
                 }
                 UploadCommand uploadCommand = UploadCommandFactory.getInstance().createCommand(req);
                 router = uploadCommand.execute(req, image);
-            } catch (ServletException | ServiceExeption e) {
+            } catch (ServletException | ServiceException e) {
                 Command command = CommandFactory.getInstance().createCommand(req);
                 router = command.execute(req, resp);
             }

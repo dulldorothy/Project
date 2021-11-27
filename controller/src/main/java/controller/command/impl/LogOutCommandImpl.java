@@ -17,7 +17,7 @@ public class LogOutCommandImpl implements Command {
         HttpSession session = req.getSession();
         session.invalidate();
 
-        return new Router("index.jsp", Router.RouteType.REDIRECT);
+        return new Router("/Controller?page=index&command=go_to_page", Router.RouteType.REDIRECT);
 
     }
 }
