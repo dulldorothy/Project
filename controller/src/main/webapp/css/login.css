@@ -1,0 +1,48 @@
+.login-form-container{
+    margin-top: 200px;
+    font-family: 'Inconsolata', monospace;
+    align-self: center;
+    justify-self: center;
+    display: inline-block;
+    background-color: aquamarine;
+}
+.body{
+
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+
+    background-color: #98ff98;
+}
+
+.login-form-wrapper{
+   
+   
+    width: 400px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+
+.input{
+    outline-style: none;
+    border: none;
+    height: 100px;
+    transition: 0.4;
+}
+.input:focus{
+    background-color: #525e74;
+}
+
+.confrim-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+   
+  }
