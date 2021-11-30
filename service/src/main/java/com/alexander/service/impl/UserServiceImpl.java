@@ -1,7 +1,8 @@
 package com.alexander.service.impl;
 
-import com.alexander.dao.database.exeptions.DAOExeption;
+import com.alexander.dao.database.exeptions.DAOException;
 import com.alexander.dao.database.impl.DAOFactory;
+import com.alexander.domain.entity.Page;
 import com.alexander.domain.entity.User;
 import com.alexander.domain.entity.UserDTO;
 import com.alexander.service.UserService;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
         UserDTO dto = null;
         try {
             return daoFactory.getUserDAO().getUserByLoginAndPass(login ,password);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to get user from database by login and password", e);
         }
 
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
         {
             daoFactory.getUserDAO().deleteUserByID(id);
             return true;
-        } catch (DAOExeption daoExeption) {
+        } catch (DAOException daoException) {
             throw new ServiceException("failed to delete user");
         }
 
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
             int id = daoFactory.getUserDAO().getUserIDbyLogin(userMap.get(USERNAME));
             daoFactory.getUserDAO().setUserBookmark(id);
             return true;
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to save user", e);
         }
     }
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = new DAOFactory();
         try {
             return daoFactory.getUserDAO().changeUserFirstNameByID(user.getId(), firstName);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change firstname", e);
         }
     }
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = new DAOFactory();
         try {
             return daoFactory.getUserDAO().changeUserImageByID(user.getId(), encodedImage);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change lastname",e);
         }
     }
@@ -106,7 +107,7 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = new DAOFactory();
         try {
             return daoFactory.getUserDAO().changeUserLastNameByID(user.getId(), lastName);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change lastname",e);
         }
     }
@@ -121,7 +122,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             return  daoFactory.getUserDAO().changeUserRoleByID(user.getId(), role);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change user role",e );
         }
     }
@@ -136,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             return  daoFactory.getUserDAO().changeUserPasswordByID(user.getId(), newPassword);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change user password", e);
         }
     }
@@ -149,7 +150,7 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = new DAOFactory();
         try {
             return daoFactory.getUserDAO().isUserExistsByLoginAndPassword(login,pass);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to get user by login and password", e);
         }
     }
@@ -159,10 +160,19 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = new DAOFactory();
         try {
             return daoFactory.getUserDAO().getUserByID(id);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to get user by id",e);
         }
 
+    }
+
+    @Override
+    public Page<UserDTO> getAllUsers(int offset, int recordsPerPage) throws ServiceException {
+        try {
+            return daoFactory.getUserDAO().getAllUsers(offset, recordsPerPage);
+        } catch (DAOException e) {
+            throw new ServiceException("Failed to get all active lots", e);
+        }
     }
 
 

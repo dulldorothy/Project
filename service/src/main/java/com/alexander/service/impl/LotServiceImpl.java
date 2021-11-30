@@ -4,7 +4,7 @@ import com.alexander.domain.entity.Page;
 import com.alexander.service.LotsService;
 import com.alexander.service.exeption.ServiceException;
 import com.alexander.service.validator.ServiceValidator;
-import com.alexander.dao.database.exeptions.DAOExeption;
+import com.alexander.dao.database.exeptions.DAOException;
 import com.alexander.dao.database.impl.DAOFactory;
 import com.alexander.domain.entity.Lot;
 
@@ -23,7 +23,7 @@ public class LotServiceImpl implements LotsService {
     public Page<Lot> getAllLots() throws ServiceException {
         try {
             return daoFactory.getLotsDAO().getAll(1, 1);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to get all lots from database", e);
         }
     }
@@ -32,7 +32,7 @@ public class LotServiceImpl implements LotsService {
     public Page<Lot> getAllActiveLots(int offset, int recordsPerPage) throws ServiceException {
         try {
             return daoFactory.getLotsDAO().getActiveLots(offset, recordsPerPage);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to get all active lots", e);
         }
     }
@@ -41,7 +41,7 @@ public class LotServiceImpl implements LotsService {
     public Page<Lot> getTagActiveLots(int offset, int recordsPerPage, String tag) throws ServiceException {
         try {
             return daoFactory.getLotsDAO().getLotsByTag(offset, recordsPerPage, tag);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to get all active lots", e);
         }
     }
@@ -50,7 +50,7 @@ public class LotServiceImpl implements LotsService {
     public Page<Lot> getAllUserLots(int offset, int recordsPerPage, int userID) throws ServiceException {
         try {
             return daoFactory.getLotsDAO().getAllUserLots(offset, recordsPerPage, userID);
-        } catch (DAOExeption daoExeption) {
+        } catch (DAOException daoException) {
             throw new ServiceException("Failed to get user lots");
         }
     }
@@ -59,7 +59,7 @@ public class LotServiceImpl implements LotsService {
     public Page<Lot> getUserBookmarkLots(int off, int recordsPerPage, int userID) throws ServiceException {
         try {
             return daoFactory.getLotsDAO().getAllUserBookmarkLots(off, recordsPerPage, userID);
-        } catch (DAOExeption daoExeption) {
+        } catch (DAOException daoException) {
             throw new ServiceException("Failed to get user bookmark lots");
         }
     }
@@ -69,8 +69,8 @@ public class LotServiceImpl implements LotsService {
         try {
             int result = daoFactory.getLotsDAO().getNumberOfActiveLotsByTag(tag);
             return (int) Math.ceil(result / (double) recordPerPage);
-        } catch (DAOExeption daoExeption) {
-            throw new ServiceException("Failed to get number of records", daoExeption);
+        } catch (DAOException daoException) {
+            throw new ServiceException("Failed to get number of records", daoException);
         }
     }
 
@@ -79,8 +79,8 @@ public class LotServiceImpl implements LotsService {
         try {
             int result = daoFactory.getLotsDAO().getNumberOfUserLots(userID);
             return (int) Math.ceil(result / (double) recordPerPage);
-        } catch (DAOExeption daoExeption) {
-            throw new ServiceException("Failed to get number of records", daoExeption);
+        } catch (DAOException daoException) {
+            throw new ServiceException("Failed to get number of records", daoException);
         }
     }
 
@@ -89,8 +89,8 @@ public class LotServiceImpl implements LotsService {
         try {
             int result = daoFactory.getLotsDAO().getNumberOfActiveLots();
             return (int) Math.ceil(result / (double) recordPerPage);
-        } catch (DAOExeption daoExeption) {
-            throw new ServiceException("Failed to get number of records", daoExeption);
+        } catch (DAOException daoException) {
+            throw new ServiceException("Failed to get number of records", daoException);
         }
     }
 
@@ -100,8 +100,8 @@ public class LotServiceImpl implements LotsService {
     public Page<Lot> getLotByID(int id) throws ServiceException {
         try {
             return daoFactory.getLotsDAO().getLotPageByID(id);
-        } catch (DAOExeption daoExeption) {
-            throw new ServiceException("Failed to select lot", daoExeption);
+        } catch (DAOException daoException) {
+            throw new ServiceException("Failed to select lot", daoException);
         }
     }
 
@@ -109,8 +109,8 @@ public class LotServiceImpl implements LotsService {
     public boolean deleteLotByID(int id) throws ServiceException {
         try {
             return daoFactory.getLotsDAO().deleteLotById(id);
-        } catch (DAOExeption daoExeption) {
-            throw new ServiceException("Failed to delete lot!", daoExeption);
+        } catch (DAOException daoException) {
+            throw new ServiceException("Failed to delete lot!", daoException);
         }
     }
 
@@ -130,8 +130,8 @@ public class LotServiceImpl implements LotsService {
         }
         try {
             return daoFactory.getLotsDAO().saveLot(lot);
-        } catch (DAOExeption daoExeption) {
-            throw new ServiceException("Failed to save lot!", daoExeption);
+        } catch (DAOException daoException) {
+            throw new ServiceException("Failed to save lot!", daoException);
         }
     }
 
@@ -139,7 +139,7 @@ public class LotServiceImpl implements LotsService {
     public boolean addLotToUserBookmarks(int userID, int lotID) throws ServiceException {
         try {
             return daoFactory.getLotsDAO().addLotToUserBookmark(userID, lotID);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change lot status", e);
         }
     }
@@ -148,7 +148,7 @@ public class LotServiceImpl implements LotsService {
     public boolean changeLotPriceByID(int id, int price) throws ServiceException {
         try {
             return daoFactory.getLotsDAO().changeLotPriceById(id, price);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change lot price", e);
         }
     }
@@ -157,7 +157,7 @@ public class LotServiceImpl implements LotsService {
     public boolean changeLotStatusByID(int id, String status) throws ServiceException {
         try {
             return daoFactory.getLotsDAO().changeLotStatusById(id, status);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change lot status", e);
         }
     }
@@ -166,7 +166,7 @@ public class LotServiceImpl implements LotsService {
     public boolean changeLotTitleByID(int id, String title) throws ServiceException {
         try {
             daoFactory.getLotsDAO().changeLotTitleById(id, title);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change lot title", e);
         }
         return false;
@@ -176,7 +176,7 @@ public class LotServiceImpl implements LotsService {
     public boolean changeLotDescriptionByID(int id, String description) throws ServiceException {
         try {
             daoFactory.getLotsDAO().changeLotDescriptionByID(id, description);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change lot description", e);
         }
         return false;
@@ -186,7 +186,7 @@ public class LotServiceImpl implements LotsService {
     public boolean changeLotImageByID(int id, String encodedImage) throws ServiceException {
         try {
             daoFactory.getLotsDAO().changeLotImageByID(id, encodedImage);
-        } catch (DAOExeption e) {
+        } catch (DAOException e) {
             throw new ServiceException("Failed to change lot description", e);
         }
         return false;

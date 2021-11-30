@@ -4,14 +4,11 @@ import com.alexander.controller.command.Command;
 import com.alexander.controller.command.Router;
 import com.alexander.controller.exeptions.CommandException;
 import com.alexander.controller.util.Base64Coder;
-
 import com.alexander.domain.entity.UserDTO;
 import com.alexander.service.ServiceFactory;
+import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.alexander.service.LotsService;
-import com.alexander.service.exeption.ServiceException;
-import com.alexander.service.impl.LotServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +23,7 @@ import java.util.Map;
 import static com.alexander.domain.fields.UserFields.*;
 
 public class CreateLotCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, CommandException {
@@ -49,7 +46,7 @@ public class CreateLotCommand implements Command {
             return new Router("Controller?page=lotcreation&command=go_to_user_lots&currentPage=1", Router.RouteType.REDIRECT);
         } catch (ServiceException e) {
             request.setAttribute(ERROR_MESSAGE, "Incorrect fields");
-            logger.error("Failed to execute CreateLotCommand Command", e);
+            LOGGER.error("Failed to execute CreateLotCommand Command", e);
             return new Router("lotcreation.jsp", Router.RouteType.FORWARD);
         }
     }

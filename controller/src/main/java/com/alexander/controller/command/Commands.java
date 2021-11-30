@@ -30,6 +30,8 @@ public enum Commands {
     CHANGE_LOT_PRICE(new ChangeLotPriceCommand()),
     CHANGE_LOT_IMAGE(new ChangeLotImageCommand()),
     DELETE_LOT(new DeleteLotCommand()),
+    GO_TO_USER_LIST(new GoToUserList()),
+    DELETE_USER(new DeleteUserCommand()),
     CHANGE_MESSAGE_READ_STATUS(new ChangeMessageReadStatusCommand());
 
 

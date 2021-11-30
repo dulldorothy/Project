@@ -3,6 +3,7 @@ package com.alexander.service;
 
 
 
+import com.alexander.domain.entity.Page;
 import com.alexander.domain.entity.UserDTO;
 import com.alexander.service.exeption.ServiceException;
 
@@ -20,6 +21,6 @@ public interface UserService {
     boolean changeUserPassword(UserDTO user, String newPassword) throws ServiceException;
     boolean checkUserIfExistsByLoginAndPass(String login, String pass) throws ServiceException;
     UserDTO getUserByID(int id) throws ServiceException;
-
+    Page<UserDTO> getAllUsers(int offset, int recordsPerPage) throws ServiceException;
 
 }

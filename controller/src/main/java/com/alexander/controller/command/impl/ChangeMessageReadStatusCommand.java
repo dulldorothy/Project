@@ -5,6 +5,8 @@ import com.alexander.controller.command.Router;
 import com.alexander.controller.exeptions.CommandException;
 import com.alexander.service.ServiceFactory;
 import com.alexander.service.exeption.ServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import static com.alexander.domain.fields.UserFields.MESSAGE_ID;
 
 public class ChangeMessageReadStatusCommand implements Command {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
@@ -24,6 +27,7 @@ public class ChangeMessageReadStatusCommand implements Command {
             router = new Router("/Controller?page=messages&command=go_to_unread_messages&currentPage=1", Router.RouteType.REDIRECT);
 
         } catch (ServiceException e) {
+            LOGGER.error("Failed to change message status", e);
             throw new CommandException();
         }
         return router;

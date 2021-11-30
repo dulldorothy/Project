@@ -1,8 +1,7 @@
 package com.alexander.dao.database.impl;
 
 import com.alexander.dao.database.ConnectionPool;
-import com.alexander.dao.database.DataBaseConnector;
-import com.alexander.dao.database.exeptions.DAOExeption;
+import com.alexander.dao.database.exeptions.DAOException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,13 +50,13 @@ public class ConnectionPoolImpl implements ConnectionPool {
     }
 
     @Override
-    public Connection getConnection() throws DAOExeption {
+    public Connection getConnection() throws DAOException {
         Connection connection;
         try {
             connection = connectionPool.take();
             usedConnections.add(connection);
         } catch (InterruptedException e) {
-            throw new DAOExeption();
+            throw new DAOException();
         }
         return connection;
     }

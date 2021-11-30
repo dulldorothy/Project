@@ -7,6 +7,8 @@ import com.alexander.controller.util.Base64Coder;
 import com.alexander.domain.entity.UserDTO;
 import com.alexander.service.ServiceFactory;
 import com.alexander.service.exeption.ServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +18,12 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.alexander.domain.fields.UserFields.*;
+import static com.alexander.domain.fields.UserFields.IMAGE;
+import static com.alexander.domain.fields.UserFields.SESSION_USER_ATR;
 
 public class ChangeUserImageCommand implements Command {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         HttpSession session = req.getSession();
@@ -31,14 +36,14 @@ public class ChangeUserImageCommand implements Command {
             encodedImage = Base64Coder.encode(image);
         }
 
-        try
-        {
-            ServiceFactory.getInstance().getUserService().changeUserImage(user,encodedImage);
+        try {
+            ServiceFactory.getInstance().getUserService().changeUserImage(user, encodedImage);
             user.setImage(encodedImage);
             session.setAttribute(SESSION_USER_ATR, user);
             router = new Router("/Controller?page=userpage&command=go_to_page", Router.RouteType.REDIRECT);
 
         } catch (ServiceException e) {
+            LOGGER.error("Failed to change user image", e);
             throw new CommandException();
         }
         return router;

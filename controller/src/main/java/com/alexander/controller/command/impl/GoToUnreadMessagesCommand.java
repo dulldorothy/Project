@@ -8,6 +8,8 @@ import com.alexander.domain.entity.Page;
 import com.alexander.domain.entity.UserDTO;
 import com.alexander.service.ServiceFactory;
 import com.alexander.service.exeption.ServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +19,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.alexander.domain.fields.UserFields.*;
+
 public class GoToUnreadMessagesCommand implements Command {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         Router router = new Router("/Controller?page=error&command=error_page", Router.RouteType.REDIRECT);
@@ -27,14 +32,15 @@ public class GoToUnreadMessagesCommand implements Command {
         Page<Message> page = new Page.PageBuilder<Message>()
                 .setListOfItems(new ArrayList<>())
                 .setNumberOfPages(0).create();
-        try{
-            page = ServiceFactory.getInstance().getMessageService().getUnreadMessages(user.getId(), 10*(currentPage - 1), 10);
+        try {
+            page = ServiceFactory.getInstance().getMessageService().getUnreadMessages(user.getId(), 10 * (currentPage - 1), 10);
             router = new Router("/jsp/messages.jsp", Router.RouteType.FORWARD);
         } catch (ServiceException e) {
+            LOGGER.error("Failed to execute go to unread messages command", e);
             throw new CommandException();
         }
         req.setAttribute(MESSAGE_LIST, page.getListOfItems());
         req.setAttribute(NUMBER_OF_PAGES, page.getNumberOfPages());
-        return router ;
+        return router;
     }
 }

@@ -6,6 +6,8 @@ import com.alexander.controller.exeptions.CommandException;
 import com.alexander.controller.util.Base64Coder;
 import com.alexander.service.ServiceFactory;
 import com.alexander.service.exeption.ServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,10 @@ import java.io.InputStream;
 
 import static com.alexander.domain.fields.UserFields.IMAGE;
 import static com.alexander.domain.fields.UserFields.LOT_ID;
+
 public class ChangeLotImageCommand implements Command {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         Router router = new Router("/Controller?page=error&command=error_page", Router.RouteType.REDIRECT);
@@ -27,12 +32,12 @@ public class ChangeLotImageCommand implements Command {
             encodedImage = Base64Coder.encode(image);
         }
 
-        try
-        {
+        try {
             ServiceFactory.getInstance().getLotsService().changeLotImageByID(lotID, encodedImage);
-            router = new Router("/Controller?lot_id="+lotID+"&command=go_to_lot_page", Router.RouteType.REDIRECT);
+            router = new Router("/Controller?lot_id=" + lotID + "&command=go_to_lot_page", Router.RouteType.REDIRECT);
 
         } catch (ServiceException e) {
+            LOGGER.error("Failed to change Lot image", e);
             throw new CommandException();
         }
         return router;

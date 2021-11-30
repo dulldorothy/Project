@@ -2,7 +2,7 @@ package com.alexander.dao.database.impl;
 
 import com.alexander.dao.database.ConnectionPool;
 import com.alexander.dao.database.MessageDAO;
-import com.alexander.dao.database.exeptions.DAOExeption;
+import com.alexander.dao.database.exeptions.DAOException;
 import com.alexander.domain.entity.Message;
 import com.alexander.domain.entity.Page;
 
@@ -41,7 +41,7 @@ public class MessageDAOImpl implements MessageDAO {
     }
 
     @Override
-    public boolean sendMessage(int ownerID, int userID, int lotID) throws DAOExeption {
+    public boolean sendMessage(int ownerID, int userID, int lotID) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(ownerID);
         parameters.add(userID);
@@ -53,14 +53,14 @@ public class MessageDAOImpl implements MessageDAO {
             setStatement(statement, parameters).execute();
             return true;
         } catch (SQLException throwables) {
-            throw new DAOExeption();
+            throw new DAOException();
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
-    public Page<Message> getUnreadMessagePage(int userID, int offset, int recordsPerPage) throws DAOExeption {
+    public Page<Message> getUnreadMessagePage(int userID, int offset, int recordsPerPage) throws DAOException {
         List<Object> parameters1 = new ArrayList<>();
         List<Object> parameters2 = new ArrayList<>();
         parameters1.add(userID);
@@ -79,14 +79,14 @@ public class MessageDAOImpl implements MessageDAO {
                     .setNumberOfPages((int) Math.ceil(set2.getInt(COLUMN)/recordsPerPage))
                     .create();
         } catch (SQLException throwables) {
-            throw new DAOExeption();
+            throw new DAOException();
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
-    public Page<Message> getAllMessagePage(int userID, int offset, int recordsPerPage) throws DAOExeption {
+    public Page<Message> getAllMessagePage(int userID, int offset, int recordsPerPage) throws DAOException {
         List<Object> parameters1 = new ArrayList<>();
         List<Object> parameters2 = new ArrayList<>();
         parameters1.add(userID);
@@ -107,14 +107,14 @@ public class MessageDAOImpl implements MessageDAO {
                     .setNumberOfPages((int) Math.ceil(set2.getInt(COLUMN)/recordsPerPage))
                     .create();
         } catch (SQLException throwables) {
-            throw new DAOExeption();
+            throw new DAOException();
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
-    public boolean changeMassageReadStatus(int id) throws DAOExeption {
+    public boolean changeMassageReadStatus(int id) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
         Connection connection = connectionPool.getConnection();
@@ -122,7 +122,7 @@ public class MessageDAOImpl implements MessageDAO {
             setStatement(statement, parameters).execute();
             return true;
         } catch (SQLException throwables) {
-            throw new DAOExeption();
+            throw new DAOException();
         } finally {
             connectionPool.releaseConnection(connection);
         }

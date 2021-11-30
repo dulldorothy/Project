@@ -34,6 +34,8 @@ public class UserFields {
                                 LOT_ID = "lot_id",
                                 DELETE_ID ="deleteID" ,
                                 LOT = "Lot",
+                                RUSSIAN = "Ru_ru",
+                                ENGLISH = "",
                                 BOOLEAN = "Boolean",
                                 USER_OWNER = "user_owner",
                                 ERROR_MESSAGE = "errorMessage",
@@ -42,6 +44,8 @@ public class UserFields {
                                 NEW_PASSWRD = "newpassword",
                                 MESSAGE_LIST = "Messages",
                                 MESSAGE_ID = "messageid",
+                                USER_LIST = "Users",
                                 ACTIVE = "active",
+                                LOCALE = "locale",
                                 EMAIL = "email";
 }

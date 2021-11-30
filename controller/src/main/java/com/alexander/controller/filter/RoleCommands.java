@@ -48,7 +48,8 @@ class RoleCommands {
             CHANGE_LOT_PRICE,
             CHANGE_LOT_STATUS,
             CHANGE_LOT_TITLE,
-            DELETE_LOT
+            DELETE_LOT,
+            DELETE_USER
     );
 
     private final EnumSet<Commands> adminCommands = EnumSet.of(
@@ -78,7 +79,9 @@ class RoleCommands {
             CHANGE_LOT_PRICE,
             CHANGE_LOT_STATUS,
             CHANGE_LOT_TITLE,
-            DELETE_LOT
+            DELETE_LOT,
+            GO_TO_USER_LIST,
+            DELETE_USER
     );
 
     private RoleCommands() {

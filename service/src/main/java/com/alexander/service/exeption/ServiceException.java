@@ -1,9 +1,9 @@
 package com.alexander.service.exeption;
 
-import com.alexander.dao.database.exeptions.DAOExeption;
+import com.alexander.dao.database.exeptions.DAOException;
 
 public class ServiceException extends Exception{
-    public ServiceException(String message, DAOExeption daoExeption) {
+    public ServiceException(String message, DAOException daoException) {
         super(message);
     }
 

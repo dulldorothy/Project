@@ -1,6 +1,6 @@
 package com.alexander.service.impl;
 
-import com.alexander.dao.database.exeptions.DAOExeption;
+import com.alexander.dao.database.exeptions.DAOException;
 import com.alexander.dao.database.impl.DAOFactory;
 import com.alexander.domain.entity.Message;
 import com.alexander.domain.entity.Page;
@@ -18,7 +18,7 @@ public class MessageServiceImpl implements MessageService {
     public Page<Message> getUnreadMessages(int userID, int offset, int recordsPerPage) throws ServiceException {
         try {
             return daoFactory.getMessageDAO().getUnreadMessagePage(userID,offset,recordsPerPage);
-        } catch (DAOExeption daoExeption) {
+        } catch (DAOException daoException) {
             throw new ServiceException("Failed to get unread messages");
         }
     }
@@ -27,7 +27,7 @@ public class MessageServiceImpl implements MessageService {
     public Page<Message> getAllMessages(int userID, int offset, int recordsPerPage) throws ServiceException {
         try {
             return daoFactory.getMessageDAO().getAllMessagePage(userID,offset,recordsPerPage);
-        } catch (DAOExeption daoExeption) {
+        } catch (DAOException daoException) {
             throw new ServiceException("Failed to get all messages");
         }
     }
@@ -36,7 +36,7 @@ public class MessageServiceImpl implements MessageService {
     public boolean changeReadStatus(int messageID) throws ServiceException {
         try {
             return daoFactory.getMessageDAO().changeMassageReadStatus(messageID);
-        } catch (DAOExeption daoExeption) {
+        } catch (DAOException daoException) {
             throw new ServiceException("Failed to change message status");
         }
     }
@@ -45,7 +45,7 @@ public class MessageServiceImpl implements MessageService {
     public boolean sendMessage(int ownerID, int userID, int lotID) throws ServiceException {
         try {
             return daoFactory.getMessageDAO().sendMessage(ownerID,userID,lotID);
-        } catch (DAOExeption daoExeption) {
+        } catch (DAOException daoException) {
             throw new ServiceException("Failed to save message");
         }
     }

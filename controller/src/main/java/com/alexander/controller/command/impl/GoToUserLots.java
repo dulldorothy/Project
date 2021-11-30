@@ -7,11 +7,9 @@ import com.alexander.domain.entity.Lot;
 import com.alexander.domain.entity.Page;
 import com.alexander.domain.entity.UserDTO;
 import com.alexander.service.ServiceFactory;
+import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.alexander.service.LotsService;
-import com.alexander.service.exeption.ServiceException;
-import com.alexander.service.impl.LotServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

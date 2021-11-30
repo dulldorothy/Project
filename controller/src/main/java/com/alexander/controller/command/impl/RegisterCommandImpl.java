@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.alexander.domain.fields.UserFields.*;
+
 public class RegisterCommandImpl implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, CommandException {
@@ -28,7 +29,7 @@ public class RegisterCommandImpl implements Command {
         userMap.put(FIRSTNAME, request.getParameter(FIRSTNAME));
         userMap.put(LASTNAME, request.getParameter(LASTNAME));
         userMap.put(PASSWORD, request.getParameter(PASSWORD));
-        userMap.put(EMAIL,request.getParameter(EMAIL));
+        userMap.put(EMAIL, request.getParameter(EMAIL));
         try {
             if (ServiceFactory.getInstance().getUserService().saveUser(userMap)) {
 
@@ -38,7 +39,7 @@ public class RegisterCommandImpl implements Command {
                 router = new Router("/jsp/register.jsp", Router.RouteType.FORWARD);
             }
         } catch (ServiceException e) {
-            logger.error("Failed to execute Register  Command", e);
+            LOGGER.error("Failed to execute Register  Command", e);
             throw new CommandException(e);
         }
 

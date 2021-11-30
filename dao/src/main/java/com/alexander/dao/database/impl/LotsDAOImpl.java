@@ -3,7 +3,7 @@ package com.alexander.dao.database.impl;
 import com.alexander.dao.database.ConnectionPool;
 
 import com.alexander.dao.database.LotsDAO;
-import com.alexander.dao.database.exeptions.DAOExeption;
+import com.alexander.dao.database.exeptions.DAOException;
 import com.alexander.domain.entity.Lot;
 import com.alexander.domain.entity.Page;
 import com.alexander.domain.entity.UserDTO;
@@ -49,20 +49,20 @@ public class LotsDAOImpl implements LotsDAO {
     }
 
     @Override
-    public boolean saveLot(Lot item) throws DAOExeption {
+    public boolean saveLot(Lot item) throws DAOException {
         List<Object> parameters = LotToListOfParameters(item);
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(SAVE_LOT)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to add lot to database!", throwables);
+            throw new DAOException("Failed to add lot to database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
-    public boolean deleteLotById(int id) throws DAOExeption {
+    public boolean deleteLotById(int id) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
         parameters.add(id);
@@ -72,7 +72,7 @@ public class LotsDAOImpl implements LotsDAO {
             setStatement(statement, parameters).executeUpdate();
             return true;
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to delete lot from database!", throwables);
+            throw new DAOException("Failed to delete lot from database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -81,7 +81,7 @@ public class LotsDAOImpl implements LotsDAO {
     }
 
     @Override
-    public boolean addLotToUserBookmark(int userID, int lotID) throws DAOExeption {
+    public boolean addLotToUserBookmark(int userID, int lotID) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(userID);
         parameters.add(lotID);
@@ -89,14 +89,14 @@ public class LotsDAOImpl implements LotsDAO {
         try (PreparedStatement statement = connection.prepareStatement(ADD_LOT_TO_USER_BOOKMARK)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to change status!", throwables);
+            throw new DAOException("Failed to change status!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
-    public Page<Lot> getAll(int offset, int recordPerPage) throws DAOExeption {
+    public Page<Lot> getAll(int offset, int recordPerPage) throws DAOException {
         List<Object> parameters1 = new ArrayList<>();
 
         parameters1.add(offset);
@@ -118,7 +118,7 @@ public class LotsDAOImpl implements LotsDAO {
                     .setNumberOfPages(numberOfPages)
                     .create();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to get lots from database!", throwables);
+            throw new DAOException("Failed to get lots from database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -127,7 +127,7 @@ public class LotsDAOImpl implements LotsDAO {
 
 
     @Override
-    public Page<Lot> getActiveLots(int offset, int recordPerPage) throws DAOExeption {
+    public Page<Lot> getActiveLots(int offset, int recordPerPage) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(offset);
         parameters.add(recordPerPage);
@@ -148,7 +148,7 @@ public class LotsDAOImpl implements LotsDAO {
 
                     .create();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to get active lots from database!", throwables);
+            throw new DAOException("Failed to get active lots from database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -156,7 +156,7 @@ public class LotsDAOImpl implements LotsDAO {
     }
 
     @Override
-    public Page<Lot> getLotsByTag(int offset, int recordPerPage, String tag) throws DAOExeption {
+    public Page<Lot> getLotsByTag(int offset, int recordPerPage, String tag) throws DAOException {
         List<Object> parameters1 = new ArrayList<>();
         List<Object> parameters2 = new ArrayList<>();
         parameters1.add(tag);
@@ -177,7 +177,7 @@ public class LotsDAOImpl implements LotsDAO {
                     .setNumberOfPages(numberOfPages)
                     .create();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to get" + tag + "lots from database!", throwables);
+            throw new DAOException("Failed to get" + tag + "lots from database!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -185,7 +185,7 @@ public class LotsDAOImpl implements LotsDAO {
     }
 
     @Override
-    public Page<Lot> getAllUserLots(int offset, int recordsPerPage, int userID) throws DAOExeption {
+    public Page<Lot> getAllUserLots(int offset, int recordsPerPage, int userID) throws DAOException {
         List<Object> parameters1 = new ArrayList<>();
         List<Object> parameters2 = new ArrayList<>();
         parameters1.add(userID);
@@ -206,14 +206,14 @@ public class LotsDAOImpl implements LotsDAO {
                     .setNumberOfPages(numberOfPages)
                     .create();
         } catch (SQLException throwables) {
-            throw new DAOExeption();
+            throw new DAOException();
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
-    public Page<Lot> getAllUserBookmarkLots(int offset, int recordsPerPage, int userID) throws DAOExeption {
+    public Page<Lot> getAllUserBookmarkLots(int offset, int recordsPerPage, int userID) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         List<Integer> LotsID = getIDOfUserBookmarkLots(userID);
         parameters.add(offset);
@@ -240,12 +240,12 @@ public class LotsDAOImpl implements LotsDAO {
                     .setListOfItems(resultSetToListOfLots(set))
                     .create();
         } catch (SQLException throwables) {
-            throw new DAOExeption();
+            throw new DAOException();
         }
     }
 
     @Override
-    public Page<Lot> getLotPageByID(int id) throws DAOExeption {
+    public Page<Lot> getLotPageByID(int id) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(id);
         Connection connection = connectionPool.getConnection();
@@ -271,14 +271,14 @@ public class LotsDAOImpl implements LotsDAO {
                                     .create()
                     ).create();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to select lot!", throwables);
+            throw new DAOException("Failed to select lot!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
-    public int getNumberOfUserLots(int userID) throws DAOExeption {
+    public int getNumberOfUserLots(int userID) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(userID);
         Connection connection = connectionPool.getConnection();
@@ -289,13 +289,13 @@ public class LotsDAOImpl implements LotsDAO {
             set.next();
             return set.getInt(COLUMN);
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to get number of user lots!", throwables);
+            throw new DAOException("Failed to get number of user lots!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
-    private List<Integer> getIDOfUserBookmarkLots(int userID) throws DAOExeption {
+    private List<Integer> getIDOfUserBookmarkLots(int userID) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(userID);
         Connection connection = connectionPool.getConnection();
@@ -311,14 +311,14 @@ public class LotsDAOImpl implements LotsDAO {
 
 
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to get number of user lots!", throwables);
+            throw new DAOException("Failed to get number of user lots!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
-    public int getNumberOfActiveLotsByTag(String tag) throws DAOExeption {
+    public int getNumberOfActiveLotsByTag(String tag) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(tag);
         Connection connection = connectionPool.getConnection();
@@ -329,21 +329,21 @@ public class LotsDAOImpl implements LotsDAO {
             set.next();
             return set.getInt(COLUMN);
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to get number of active lot!", throwables);
+            throw new DAOException("Failed to get number of active lot!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
     }
 
     @Override
-    public int getNumberOfActiveLots() throws DAOExeption {
+    public int getNumberOfActiveLots() throws DAOException {
         Connection connection = connectionPool.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(GET_NUMBER_OF_ACTIVE_RECORDS)) {
             ResultSet set = setStatement(statement, null).executeQuery();
             set.next();
             return set.getInt(COLUMN);
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to get number of active lot!", throwables);
+            throw new DAOException("Failed to get number of active lot!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -351,7 +351,7 @@ public class LotsDAOImpl implements LotsDAO {
 
 
     @Override
-    public boolean changeLotPriceById(int id, int price) throws DAOExeption {
+    public boolean changeLotPriceById(int id, int price) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(price);
         parameters.add(id);
@@ -359,7 +359,7 @@ public class LotsDAOImpl implements LotsDAO {
         try (PreparedStatement statement = connection.prepareStatement(CHANGE_PRICE_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to change price !", throwables);
+            throw new DAOException("Failed to change price !", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -367,7 +367,7 @@ public class LotsDAOImpl implements LotsDAO {
     }
 
     @Override
-    public boolean changeLotTitleById(int id, String title) throws DAOExeption {
+    public boolean changeLotTitleById(int id, String title) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(title);
         parameters.add(id);
@@ -375,7 +375,7 @@ public class LotsDAOImpl implements LotsDAO {
         try (PreparedStatement statement = connection.prepareStatement(CHANGE_TITLE_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to change title !", throwables);
+            throw new DAOException("Failed to change title !", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -384,7 +384,7 @@ public class LotsDAOImpl implements LotsDAO {
     }
 
     @Override
-    public boolean changeLotStatusById(int id, String status) throws DAOExeption {
+    public boolean changeLotStatusById(int id, String status) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(status);
         parameters.add(id);
@@ -393,7 +393,7 @@ public class LotsDAOImpl implements LotsDAO {
                 PreparedStatement statement = connection.prepareStatement(CHANGE_STATUS_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to change status!", throwables);
+            throw new DAOException("Failed to change status!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -402,7 +402,7 @@ public class LotsDAOImpl implements LotsDAO {
     }
 
     @Override
-    public boolean changeLotDescriptionByID(int id, String description) throws DAOExeption {
+    public boolean changeLotDescriptionByID(int id, String description) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(description);
         parameters.add(id);
@@ -411,7 +411,7 @@ public class LotsDAOImpl implements LotsDAO {
                 PreparedStatement statement = connection.prepareStatement(CHANGE_DESCRIPTION_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to change status!", throwables);
+            throw new DAOException("Failed to change status!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -419,7 +419,7 @@ public class LotsDAOImpl implements LotsDAO {
     }
 
     @Override
-    public boolean changeLotImageByID(int id, String encodedImage) throws DAOExeption {
+    public boolean changeLotImageByID(int id, String encodedImage) throws DAOException {
         List<Object> parameters = new ArrayList<>();
         parameters.add(encodedImage);
         parameters.add(id);
@@ -428,7 +428,7 @@ public class LotsDAOImpl implements LotsDAO {
                 PreparedStatement statement = connection.prepareStatement(CHANGE_IMAGE_BY_ID)) {
             return setStatement(statement, parameters).execute();
         } catch (SQLException throwables) {
-            throw new DAOExeption("Failed to change status!", throwables);
+            throw new DAOException("Failed to change status!", throwables);
         } finally {
             connectionPool.releaseConnection(connection);
         }
@@ -484,11 +484,11 @@ public class LotsDAOImpl implements LotsDAO {
 
         return resultList;
     }
-    private void setAutoCommit(Connection connection, boolean b) throws DAOExeption {
+    private void setAutoCommit(Connection connection, boolean b) throws DAOException {
         try {
             connection.setAutoCommit(b);
         } catch (SQLException e) {
-            throw new DAOExeption();
+            throw new DAOException();
         }
     }
 }

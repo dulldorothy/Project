@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page isELIgnored="false"%>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="prop.local"/>
+    
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -7,17 +12,23 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/headercss.css">
     <script src="js/js.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    
 </head>
 
 
-<header class="header">
+<header class="header">${sessionScope.locale}
     <div id="product" data-prodnumber="${sessionScope.username}">
     <nav class="navigation"> 
         <div class="navigation-container">
-            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=go_to_page" class="header-logo"> e</a></div>
+            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=change_locale&locale=en_EN" class="header-logo"> En</a></div>
+            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=change_locale&locale=ru_RU" class="header-logo"> Ru</a></div>
+
             <div class="navigation-pages">
              <ul class="pages-list">
-                 <li class="pages-element"><a href="${pageContext.request.contextPath}/Controller?page=catalog&command=go_to_page" class="header-logo"> Catalog</a></li>
+                 <li class="pages-element"><a href="${pageContext.request.contextPath}/Controller?page=catalog&command=go_to_page" class="header-logo"> <fmt:message key="header.catalog" /></a></li>
+                 <c:if test="${sessionScope.user.role == 'admin'}">
+                 <li class="pages-element"><a href="${pageContext.request.contextPath}/Controller?page=userlist&command=go_to_user_list&currentPage=1" class="header-logo"> User list</a></li>
+                </c:if>
                 <c:choose>
                    <c:when test="${sessionScope.user.role == 'guest'}">
                    </c:when>

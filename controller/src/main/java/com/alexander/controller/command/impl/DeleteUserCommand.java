@@ -5,9 +5,7 @@ import com.alexander.controller.command.Router;
 import com.alexander.controller.exeptions.CommandException;
 import com.alexander.domain.entity.UserDTO;
 import com.alexander.service.ServiceFactory;
-import com.alexander.service.UserService;
 import com.alexander.service.exeption.ServiceException;
-import com.alexander.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +18,7 @@ import java.io.IOException;
 import static com.alexander.domain.fields.UserFields.*;
 
 public class DeleteUserCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
@@ -31,7 +29,7 @@ public class DeleteUserCommand implements Command {
         if (user.getRole().equals(ADMIN_ROLE)) {
             try {
                 ServiceFactory.getInstance().getUserService().deleteUserByID(deleteID);
-                return new Router("/Controller?page=usermanager&command=go_to_page", Router.RouteType.REDIRECT);
+                return new Router("/Controller?page=userlist&command=go_to_user_list&currentPage=1", Router.RouteType.REDIRECT);
             } catch (ServiceException e) {
 
 
@@ -44,7 +42,7 @@ public class DeleteUserCommand implements Command {
                     session.invalidate();
                     return new Router("/Controller?page=index&command=go_to_page", Router.RouteType.REDIRECT);
                 } catch (ServiceException e) {
-                    logger.error("Failed to execute DeleteUser Command", e);
+                    LOGGER.error("Failed to execute DeleteUser Command", e);
                     throw new CommandException("failed to delete user");
                 }
             }

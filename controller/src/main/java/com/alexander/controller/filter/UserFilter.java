@@ -29,6 +29,10 @@ public class UserFilter implements Filter {
                     .create();
             session.setAttribute(SESSION_USER_ATR, user);
         }
+        if (session.getAttribute(LOCALE) == null)
+        {
+            session.setAttribute(LOCALE, ENGLISH);
+        }
         String commandName = request.getParameter(COMMAND);
         Commands command;
         if (commandName != null) {
