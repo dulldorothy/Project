@@ -1,12 +1,12 @@
 package com.alexander.service.impl;
 
+import com.alexander.dao.database.exeptions.DAOException;
+import com.alexander.dao.database.impl.DAOFactory;
+import com.alexander.domain.entity.Lot;
 import com.alexander.domain.entity.Page;
 import com.alexander.service.LotsService;
 import com.alexander.service.exeption.ServiceException;
 import com.alexander.service.validator.ServiceValidator;
-import com.alexander.dao.database.exeptions.DAOException;
-import com.alexander.dao.database.impl.DAOFactory;
-import com.alexander.domain.entity.Lot;
 
 import java.util.Map;
 
@@ -39,6 +39,7 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public Page<Lot> getTagActiveLots(int offset, int recordsPerPage, String tag) throws ServiceException {
+        ServiceValidator.validate(tag);
         try {
             return daoFactory.getLotsDAO().getLotsByTag(offset, recordsPerPage, tag);
         } catch (DAOException e) {
@@ -48,6 +49,7 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public Page<Lot> getAllUserLots(int offset, int recordsPerPage, int userID) throws ServiceException {
+        ServiceValidator.validate(userID);
         try {
             return daoFactory.getLotsDAO().getAllUserLots(offset, recordsPerPage, userID);
         } catch (DAOException daoException) {
@@ -57,6 +59,7 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public Page<Lot> getUserBookmarkLots(int off, int recordsPerPage, int userID) throws ServiceException {
+        ServiceValidator.validate(userID);
         try {
             return daoFactory.getLotsDAO().getAllUserBookmarkLots(off, recordsPerPage, userID);
         } catch (DAOException daoException) {
@@ -66,6 +69,7 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public int getNumberOfTagPages(int recordPerPage, String tag) throws ServiceException {
+        ServiceValidator.validate(tag);
         try {
             int result = daoFactory.getLotsDAO().getNumberOfActiveLotsByTag(tag);
             return (int) Math.ceil(result / (double) recordPerPage);
@@ -76,6 +80,7 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public int getNUmberOfUserLotsPages(int recordPerPage, int userID) throws ServiceException {
+        ServiceValidator.validate(userID);
         try {
             int result = daoFactory.getLotsDAO().getNumberOfUserLots(userID);
             return (int) Math.ceil(result / (double) recordPerPage);
@@ -95,9 +100,9 @@ public class LotServiceImpl implements LotsService {
     }
 
 
-
     @Override
     public Page<Lot> getLotByID(int id) throws ServiceException {
+        ServiceValidator.validate(id);
         try {
             return daoFactory.getLotsDAO().getLotPageByID(id);
         } catch (DAOException daoException) {
@@ -107,6 +112,7 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public boolean deleteLotByID(int id) throws ServiceException {
+        ServiceValidator.validate(id);
         try {
             return daoFactory.getLotsDAO().deleteLotById(id);
         } catch (DAOException daoException) {
@@ -125,9 +131,8 @@ public class LotServiceImpl implements LotsService {
                 .setTagList(lotMap.get(TAG_LIST))
                 .setImage(lotMap.get(ENCODED_IMAGE))
                 .create();
-        if (!ServiceValidator.validate(lot)) {
-            throw new ServiceException("Lot validation failed");
-        }
+        ServiceValidator.validate(lot);
+
         try {
             return daoFactory.getLotsDAO().saveLot(lot);
         } catch (DAOException daoException) {
@@ -137,6 +142,7 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public boolean addLotToUserBookmarks(int userID, int lotID) throws ServiceException {
+        ServiceValidator.validate(userID, lotID);
         try {
             return daoFactory.getLotsDAO().addLotToUserBookmark(userID, lotID);
         } catch (DAOException e) {
@@ -146,6 +152,7 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public boolean changeLotPriceByID(int id, int price) throws ServiceException {
+        ServiceValidator.validate(id, price);
         try {
             return daoFactory.getLotsDAO().changeLotPriceById(id, price);
         } catch (DAOException e) {
@@ -155,6 +162,8 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public boolean changeLotStatusByID(int id, String status) throws ServiceException {
+        ServiceValidator.validate(id);
+        ServiceValidator.validate(status);
         try {
             return daoFactory.getLotsDAO().changeLotStatusById(id, status);
         } catch (DAOException e) {
@@ -164,6 +173,8 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public boolean changeLotTitleByID(int id, String title) throws ServiceException {
+        ServiceValidator.validate(id);
+        ServiceValidator.validate(title);
         try {
             daoFactory.getLotsDAO().changeLotTitleById(id, title);
         } catch (DAOException e) {
@@ -174,6 +185,8 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public boolean changeLotDescriptionByID(int id, String description) throws ServiceException {
+        ServiceValidator.validate(id);
+        ServiceValidator.validate(description);
         try {
             daoFactory.getLotsDAO().changeLotDescriptionByID(id, description);
         } catch (DAOException e) {
@@ -184,6 +197,8 @@ public class LotServiceImpl implements LotsService {
 
     @Override
     public boolean changeLotImageByID(int id, String encodedImage) throws ServiceException {
+        ServiceValidator.validate(id);
+        ServiceValidator.validate(encodedImage);
         try {
             daoFactory.getLotsDAO().changeLotImageByID(id, encodedImage);
         } catch (DAOException e) {

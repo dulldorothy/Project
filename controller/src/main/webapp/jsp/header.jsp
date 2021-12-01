@@ -1,10 +1,10 @@
+<%@ page pageEncoding="UTF-8" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page isELIgnored="false"%>
-<fmt:setLocale value="${sessionScope.locale}"/>
-<fmt:setBundle basename="prop.local"/>
-    
+
+
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,10 +17,12 @@
 
 
 <header class="header">${sessionScope.locale}
+    <fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="prop.local"/>
     <div id="product" data-prodnumber="${sessionScope.username}">
     <nav class="navigation"> 
         <div class="navigation-container">
-            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=change_locale&locale=en_EN" class="header-logo"> En</a></div>
+            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=change_locale&locale=en_US" class="header-logo"> En</a></div>
             <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=change_locale&locale=ru_RU" class="header-logo"> Ru</a></div>
 
             <div class="navigation-pages">
