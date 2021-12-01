@@ -33,6 +33,6 @@ public class GoToLotPageCommand implements Command {
         }
         req.setAttribute(LOT, page.getLot());
         req.setAttribute(USER_OWNER, page.getUserOwner());
-        return new Router("/jsp/lotpage.jsp", Router.RouteType.FORWARD);
+        return new Router(PAGE_PREV_PATH +"lotpage.jsp", Router.RouteType.FORWARD);
     }
 }

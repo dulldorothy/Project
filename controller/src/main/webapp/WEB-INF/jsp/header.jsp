@@ -1,29 +1,32 @@
-<%@ page pageEncoding="UTF-8" %>
+<%@ page pageEncoding="UTF-8" language="java" contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page isELIgnored="false"%>
-
-
+<html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/headercss.css">
     <script src="js/js.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    
+    <fmt:setLocale value="${sessionScope.local}"/>
+    <fmt:setBundle basename="local" var="loc"/>
+    <fmt:message bundle="${loc}" key="header.catalog" var="message"/>
+
 </head>
 
+<body>
+<c:out value="${message}"/>
+<header class="header">${sessionScope.local}
 
-<header class="header">${sessionScope.locale}
-    <fmt:setLocale value="${sessionScope.locale}"/>
-<fmt:setBundle basename="prop.local"/>
     <div id="product" data-prodnumber="${sessionScope.username}">
     <nav class="navigation"> 
         <div class="navigation-container">
-            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=change_locale&locale=en_US" class="header-logo"> En</a></div>
-            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=change_locale&locale=ru_RU" class="header-logo"> Ru</a></div>
+            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=change_locale&local=en_US" class="header-logo"> En</a></div>
+            <div class="navigation-div-main"><a href="${pageContext.request.contextPath}/Controller?page=index&command=change_locale&local=ru" class="header-logo"> Ru</a></div>
 
             <div class="navigation-pages">
              <ul class="pages-list">
@@ -62,4 +65,5 @@
         </div>
     </nav>
 </header>
-
+</body>
+</html>

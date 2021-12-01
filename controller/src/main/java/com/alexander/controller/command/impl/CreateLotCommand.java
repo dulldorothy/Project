@@ -47,7 +47,7 @@ public class CreateLotCommand implements Command {
         } catch (ServiceException e) {
             request.setAttribute(ERROR_MESSAGE, "Incorrect fields");
             LOGGER.error("Failed to execute CreateLotCommand Command", e);
-            return new Router("lotcreation.jsp", Router.RouteType.FORWARD);
+            return new Router(PAGE_PREV_PATH+"lotcreation.jsp", Router.RouteType.FORWARD);
         }
     }
 

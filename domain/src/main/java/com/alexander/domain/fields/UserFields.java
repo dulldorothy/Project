@@ -46,6 +46,7 @@ public class UserFields {
                                 MESSAGE_ID = "messageid",
                                 USER_LIST = "Users",
                                 ACTIVE = "active",
-                                LOCALE = "locale",
-                                EMAIL = "email";
+                                LOCALE = "local",
+                                EMAIL = "email",
+                                PAGE_PREV_PATH = "/WEB-INF/jsp/";
 }

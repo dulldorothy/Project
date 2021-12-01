@@ -36,7 +36,7 @@ public class RegisterCommandImpl implements Command {
                 router = new Router("/Controller?page=login&command=go_to_page", Router.RouteType.REDIRECT);
             } else {
                 request.setAttribute("massage", "Invalid Fields");
-                router = new Router("/jsp/register.jsp", Router.RouteType.FORWARD);
+                router = new Router(PAGE_PREV_PATH + "register.jsp", Router.RouteType.FORWARD);
             }
         } catch (ServiceException e) {
             LOGGER.error("Failed to execute Register  Command", e);

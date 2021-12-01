@@ -32,7 +32,7 @@ public class GoToFullCatalog implements Command {
         }
         req.setAttribute(NUMBER_OF_PAGES, page.getNumberOfPages());
         req.setAttribute(LOT_LIST, page.getListOfItems());
-        Router router = new Router("/jsp/searchresult.jsp", Router.RouteType.FORWARD);
+        Router router = new Router(PAGE_PREV_PATH+"searchresult.jsp", Router.RouteType.FORWARD);
         return router;
     }
 }

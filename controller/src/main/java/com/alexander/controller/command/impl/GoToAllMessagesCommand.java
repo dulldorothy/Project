@@ -34,7 +34,7 @@ public class GoToAllMessagesCommand implements Command {
                 .setNumberOfPages(0).create();
         try {
             page = ServiceFactory.getInstance().getMessageService().getAllMessages(user.getId(), 10 * (currentPage - 1), 10);
-            router = new Router("/jsp/messages.jsp", Router.RouteType.FORWARD);
+            router = new Router(PAGE_PREV_PATH+"messages.jsp", Router.RouteType.FORWARD);
         } catch (ServiceException e) {
             LOGGER.error("Failed to execute go to all messages command", e);
             throw new CommandException();
