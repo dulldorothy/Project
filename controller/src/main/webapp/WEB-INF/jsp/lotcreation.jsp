@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,10 +20,7 @@
             <input type="text" name="title" placeholder="Title"/>
             <input type="number" name="price" placeholder="Price"/>
             <input type="hidden" name="command" value="create_lot"/>
-            <input type="radio" name="type" id="auction" value="auction"/>
-            <label for="auction"> Auction </label>
-            <input type="radio" name="type" value="marketLot"/>
-            <label for="marketLot"> "Buy now" lot </label>
+
             <br>
             <input type="text" name="description" placeholder="description"/>
             <input type="file" name="image"/>
@@ -34,7 +31,7 @@
                 <option value="petsupplies">Pet supplies</option>
                 <option value="furniture">Furniture</option>
                 <option value="clothing">Clothing</option>
-                <option value="goods">Food and drinks</option>
+                <option value="goods">Kitchen furniture</option>
             </select>
             <button type="submit" >Save Lot</button>
 

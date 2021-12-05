@@ -16,7 +16,7 @@ import static com.alexander.domain.fields.UserFields.PAGE_PREV_PATH;
 public class ChangeLocaleCommand implements Command {
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(true);
         String locale = req.getParameter(LOCALE);
         session.setAttribute(LOCALE, locale);
         return new Router(PAGE_PREV_PATH+"index.jsp", Router.RouteType.FORWARD);
