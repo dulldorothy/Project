@@ -1,4 +1,4 @@
-<head>
+﻿<head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css"/>
 </head>
 

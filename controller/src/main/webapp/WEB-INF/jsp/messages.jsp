@@ -1,5 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" isELIgnored="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <fmt:setLocale value="${sessionScope.locale}"/>
+    <fmt:setBundle basename="prop.locale" var="loc"/>
+    <fmt:message bundle="${loc}" key="messages.unread.messages" var="unread"/>
+    <fmt:message bundle="${loc}" key="messages.all.messages" var="all"/>
+    <fmt:message bundle="${loc}" key="messages.mark.read" var="read"/>
 </head>
 <body>
 
@@ -15,12 +22,12 @@
 
     <c:choose>
         <c:when  test="${param.command == 'go_to_unread_messages'}">
-            Unread messages
-            <a href="${pageContext.request.contextPath}/Controller?page=messages&command=go_to_all_messages&currentPage=1">All messages</a>
+            <c:out value="${unread}"/>
+            <a href="${pageContext.request.contextPath}/Controller?page=messages&command=go_to_all_messages&currentPage=1"><c:out value="${all}"/></a>
         </c:when>
         <c:otherwise>
-            <a href="${pageContext.request.contextPath}/Controller?page=messages&command=go_to_unread_messages&currentPage=1">Unread messages</a>
-            All messages
+            <a href="${pageContext.request.contextPath}/Controller?page=messages&command=go_to_unread_messages&currentPage=1"><c:out value="${unread}"/></a>
+            <c:out value="${all}"/>
         </c:otherwise>
     </c:choose>
     <c:forEach var="Message" items="${requestScope.Messages}">
@@ -35,7 +42,7 @@
                                     <form action="/Controller" method="post">
                                         <input type="hidden" name="command" value="change_message_read_status"/>
                                         <input type="hidden" name="messageid" value="${Message.id}"/>
-                                        <button type="submit">Mark as read</button>
+                                        <button type="submit"><c:out value="${read}"/></button>
                                     </form>
                                 </c:when>
                                 <c:otherwise>
