@@ -15,6 +15,9 @@
     <fmt:message bundle="${loc}" key="messages.unread.messages" var="unread"/>
     <fmt:message bundle="${loc}" key="messages.all.messages" var="all"/>
     <fmt:message bundle="${loc}" key="messages.mark.read" var="read"/>
+    <fmt:message bundle="${loc}" key="messages.message.part1" var="part1"/>
+    <fmt:message bundle="${loc}" key="messages.message.part2" var="part2"/>
+    <fmt:message bundle="${loc}" key="messages.message.part3" var="part3"/>
 </head>
 <body>
 
@@ -33,11 +36,8 @@
     <c:forEach var="Message" items="${requestScope.Messages}">
                         <div class="product_item">
                             <div class="desc_part">
-                                <h2>${Message.email}</h2>
-                                <h2>${Message.lotName} </h2> 
-                                <h2>${Message.buyerName} </h2> 
-                                ${Message.id}
-                                
+                            <p><c:out value="${part1}"/> ${sessionScope.user.userName}, ${Message.buyerName} <c:out value="${part2}"/> (${Message.lotName}).  <c:out value="${part3}"/> <h2>${Message.email}</h2> </p>
+
                                 <c:choose>                               <c:when  test="${param.command == 'go_to_unread_messages'}">
                                     <form action="/Controller" method="post">
                                         <input type="hidden" name="command" value="change_message_read_status"/>

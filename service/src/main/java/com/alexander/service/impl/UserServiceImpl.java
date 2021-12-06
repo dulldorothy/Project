@@ -62,8 +62,6 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = new DAOFactory();
         try {
             daoFactory.getUserDAO().saveUser(user);
-            int id = daoFactory.getUserDAO().getUserIDbyLogin(userMap.get(USERNAME));
-            daoFactory.getUserDAO().setUserBookmark(id);
             return true;
         } catch (DAOException e) {
             throw new ServiceException("Failed to save user", e);
