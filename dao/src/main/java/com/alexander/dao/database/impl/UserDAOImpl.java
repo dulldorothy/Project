@@ -22,10 +22,10 @@ import static com.alexander.domain.fields.UserFields.*;
 
 public class UserDAOImpl implements UserDAO {
     private static final String GET_USER_ID_BY_LOGIN = "SELECT id FROM users WHERE username = ?;";
-    private static final String GET_ID_OF_USER_LOTS = "SELECT id FROM  lots WHERE user_owner_id = ?;";
+    private static final String GET_ID_OF_USER_LOTS = "SELECT id as column FROM  lots WHERE user_owner_id = ?;";
     private static final String SET_USER_BOOKMARK = "INSERT INTO user_bookmarks (user_id, marked_lots_id) VALUES (?, '');";
-    private static final String DELETE_USER_BY_ID = "DELETE FROM user_bookmarks WHERE user_id = ?;" +
-            "DELETE FROM user_lots WHERE user_id = ?;" +
+    private static final String DELETE_USER_BY_ID = "DELETE FROM messages WHERE to_id = ? or from_id = ?;" +
+            "DELETE FROM user_bookmarks WHERE user_id = ?;" +
             "DELETE FROM users WHERE id = ?;";
     private static final String SAVE_USER = "INSERT INTO users (username, pass, lastname, firstname, role, encodedImage,email) VALUES(?,?,?,?,?,?,?);";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?;";
@@ -157,9 +157,10 @@ public class UserDAOImpl implements UserDAO {
         List<Object> parameters = new ArrayList<>();
         List<Object> parameters2 = new ArrayList<>();
         parameters.add(id);
-        parameters2.get(id);
-        parameters2.get(id);
-        parameters2.get(id);
+        parameters2.add(id);
+        parameters2.add(id);
+        parameters2.add(id);
+        parameters2.add(id);
         Connection connection = connectionPool.getConnection();
         setAutoCommit(connection, false);
         try (PreparedStatement statement1 = connection.prepareStatement(GET_ID_OF_USER_LOTS);
@@ -173,7 +174,6 @@ public class UserDAOImpl implements UserDAO {
             }
             query = query + DELETE_USER_BY_ID;
             PreparedStatement statement2 = connection.prepareStatement(query);
-            ;
             setStatement(statement2, parameters2).executeUpdate();
             connection.commit();
             statement2.close();
@@ -370,7 +370,7 @@ public class UserDAOImpl implements UserDAO {
     private List<Integer> getIDOfUserLots(ResultSet set) throws SQLException {
         List<Integer> lotsID = new ArrayList<>();
         while (set.next()) {
-            lotsID.get(set.getInt("column"));
+            lotsID.add(set.getInt(COLUMN));
         }
         return lotsID;
     }
