@@ -172,6 +172,7 @@ public class LotsDAOImpl implements LotsDAO {
         ) {
             set2.next();
             int numberOfPages = (int) Math.ceil(set2.getInt(COLUMN)/(double)recordPerPage);
+            connection.commit();
             return new Page.PageBuilder<Lot>()
                     .setListOfItems(resultSetToListOfLots(set1))
                     .setNumberOfPages(numberOfPages)
@@ -201,6 +202,7 @@ public class LotsDAOImpl implements LotsDAO {
         ) {
             set2.next();
             int numberOfPages = (int) Math.ceil(set2.getInt(COLUMN)/(double)recordsPerPage);
+            connection.commit();
             return new Page.PageBuilder<Lot>()
                     .setListOfItems(resultSetToListOfLots(set1))
                     .setNumberOfPages(numberOfPages)
@@ -282,9 +284,7 @@ public class LotsDAOImpl implements LotsDAO {
         List<Object> parameters = new ArrayList<>();
         parameters.add(userID);
         Connection connection = connectionPool.getConnection();
-
         try (PreparedStatement statement = connection.prepareStatement(GET_NUMBER_OF_USER_RECORDS)) {
-
             ResultSet set = setStatement(statement, parameters).executeQuery();
             set.next();
             return set.getInt(COLUMN);
@@ -299,17 +299,13 @@ public class LotsDAOImpl implements LotsDAO {
         List<Object> parameters = new ArrayList<>();
         parameters.add(userID);
         Connection connection = connectionPool.getConnection();
-
         try (PreparedStatement statement = connection.prepareStatement(GET_NUMBER_OF_USER_BOOKMARKS)) {
-
             ResultSet set = setStatement(statement, parameters).executeQuery();
             List<Integer> list = new ArrayList<>();
             while (set.next()) {
                 list.add(set.getInt(MARKED_LOT));
             }
             return list;
-
-
         } catch (SQLException throwables) {
             throw new DAOException("Failed to get number of user lots!", throwables);
         } finally {
@@ -322,9 +318,7 @@ public class LotsDAOImpl implements LotsDAO {
         List<Object> parameters = new ArrayList<>();
         parameters.add(tag);
         Connection connection = connectionPool.getConnection();
-
         try (PreparedStatement statement = connection.prepareStatement(GET_NUMBER_OF_TAG_RECORDS)) {
-
             ResultSet set = setStatement(statement, parameters).executeQuery();
             set.next();
             return set.getInt(COLUMN);

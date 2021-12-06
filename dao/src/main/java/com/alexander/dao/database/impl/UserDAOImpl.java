@@ -22,8 +22,11 @@ import static com.alexander.domain.fields.UserFields.*;
 
 public class UserDAOImpl implements UserDAO {
     private static final String GET_USER_ID_BY_LOGIN = "SELECT id FROM users WHERE username = ?;";
+    private static final String GET_ID_OF_USER_LOTS = "SELECT id FROM  lots WHERE user_owner_id = ?;";
     private static final String SET_USER_BOOKMARK = "INSERT INTO user_bookmarks (user_id, marked_lots_id) VALUES (?, '');";
-    private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id = ?;";
+    private static final String DELETE_USER_BY_ID = "DELETE FROM user_bookmarks WHERE user_id = ?;" +
+            "DELETE FROM user_lots WHERE user_id = ?;" +
+            "DELETE FROM users WHERE id = ?;";
     private static final String SAVE_USER = "INSERT INTO users (username, pass, lastname, firstname, role, encodedImage,email) VALUES(?,?,?,?,?,?,?);";
     private static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?;";
     private static final String SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE username = ? AND pass = ?;";
@@ -47,15 +50,16 @@ public class UserDAOImpl implements UserDAO {
         parameters.add(offset);
         parameters.add(recordsPerPage);
         Connection connection = connectionPool.getConnection();
+        setAutoCommit(connection, false);
         try (PreparedStatement statement1 = connection.prepareStatement(GET_NUMBER_OF_USERS);
              PreparedStatement statement2 = connection.prepareStatement(SELECT_ALL_USERS);
              ResultSet set1 = setStatement(statement1, null).executeQuery();
              ResultSet set2 = setStatement(statement2, parameters).executeQuery()) {
             set1.next();
             int numberOfUsers = set1.getInt(COLUMN);
-
+            connection.commit();
             return new Page.PageBuilder<UserDTO>()
-                    .setNumberOfPages((int) Math.ceil(numberOfUsers/(double)recordsPerPage))
+                    .setNumberOfPages((int) Math.ceil(numberOfUsers / (double) recordsPerPage))
                     .setListOfItems(ResultSetToListOfUsers(set2)).create();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -151,10 +155,28 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean deleteUserByID(int id) throws DAOException {
         List<Object> parameters = new ArrayList<>();
+        List<Object> parameters2 = new ArrayList<>();
         parameters.add(id);
+        parameters2.get(id);
+        parameters2.get(id);
+        parameters2.get(id);
         Connection connection = connectionPool.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_USER_BY_ID)) {
-            setStatement(statement, parameters).executeUpdate();
+        setAutoCommit(connection, false);
+        try (PreparedStatement statement1 = connection.prepareStatement(GET_ID_OF_USER_LOTS);
+             ResultSet set1 = setStatement(statement1, parameters).executeQuery()) {
+            String query = "";
+            for (Integer lotID : getIDOfUserLots(set1)
+            ) {
+                query = query + "DELETE FROM messages WHERE lot_id = " + lotID + ";" +
+                        "DELETE FROM user_bookmarks WHERE marked_lots_id = " + lotID + ";" +
+                        "DELETE FROM lots WHERE id = " + lotID + ";";
+            }
+            query = query + DELETE_USER_BY_ID;
+            PreparedStatement statement2 = connection.prepareStatement(query);
+            ;
+            setStatement(statement2, parameters2).executeUpdate();
+            connection.commit();
+            statement2.close();
             return true;
         } catch (SQLException throwables) {
             throw new DAOException("Failed to delete User from database!", throwables);
@@ -162,6 +184,14 @@ public class UserDAOImpl implements UserDAO {
             connectionPool.releaseConnection(connection);
         }
 
+    }
+
+    private void setAutoCommit(Connection connection, boolean b) throws DAOException {
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new DAOException();
+        }
     }
 
     @Override
@@ -291,10 +321,10 @@ public class UserDAOImpl implements UserDAO {
 
         return statement;
     }
+
     private List<UserDTO> ResultSetToListOfUsers(ResultSet resultSet) throws SQLException {
         List<UserDTO> list = new ArrayList<>();
-        while (resultSet.next())
-        {
+        while (resultSet.next()) {
             list.add(new UserDTO.UserDTOBuilder()
                     .setFirstname(resultSet.getString(FIRSTNAME))
                     .setLastname(resultSet.getString(LASTNAME))
@@ -336,5 +366,14 @@ public class UserDAOImpl implements UserDAO {
         resultList.add(user.getEmail());
         return resultList;
     }
+
+    private List<Integer> getIDOfUserLots(ResultSet set) throws SQLException {
+        List<Integer> lotsID = new ArrayList<>();
+        while (set.next()) {
+            lotsID.get(set.getInt("column"));
+        }
+        return lotsID;
+    }
+
 
 }
