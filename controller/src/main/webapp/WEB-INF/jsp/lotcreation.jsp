@@ -18,7 +18,7 @@
 
         <form action="Controller" method="post" enctype="multipart/form-data">
             <input type="text" name="title" placeholder="Title"/>
-            <input type="number" name="price" placeholder="Price"/>
+            <input type="number" name="price" placeholder="Price" value="1"/>
             <input type="hidden" name="command" value="create_lot"/>
 
             <br>

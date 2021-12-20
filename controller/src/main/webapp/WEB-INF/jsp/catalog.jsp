@@ -25,7 +25,7 @@
     <div class="main-container">
         <div class="category-container">
             <div class="category-element">
-                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_full_catalog&currentPage=1" class="category-link"><img src="pic/чайник.png" alt="" class="category-image"></a>
+                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_full_catalog&currentPage=1" class="category-link"><img src="pic/все.png" alt="" class="category-image"></a>
                 <span class="category-name"><c:out value="${goods}"/></span>
             </div>
             <div class="category-element">
@@ -33,23 +33,23 @@
                 <span class="category-name"><c:out value="${kitchen}"/></span>
             </div>
             <div class="category-element">
-                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=householdproducts" class="category-link"><img src="pic/чайник.png" alt="" class="category-image"></a>
+                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=householdproducts" class="category-link"><img src="pic/пылесос.png" alt="" class="category-image"></a>
                 <span class="category-name"><c:out value="${household}"/></span>
             </div>
             <div class="category-element">
-                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=electronics" class="category-link"><img src="pic/чайник.png" alt="" class="category-image"></a>
+                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=electronics" class="category-link"><img src="pic/телеофн.png" alt="" class="category-image"></a>
                 <span class="category-name"><c:out value="${electronics}"/></span>
             </div>
             <div class="category-element">
-                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=petsupplies" class="category-link"><img src="pic/чайник.png" alt="" class="category-image"></a>
+                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=petsupplies" class="category-link"><img src="pic/кот.png" alt="" class="category-image"></a>
                 <span class="category-name"><c:out value="${pet}"/></span>
             </div>
             <div class="category-element">
-                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=furniture" class="category-link"><img src="pic/чайник.png" alt="" class="category-image"></a>
+                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=furniture" class="category-link"><img src="pic/кресло.png" alt="" class="category-image"></a>
                 <span class="category-name"><c:out value="${furniture}"/></span>
             </div>
             <div class="category-element">
-                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=clothing" class="category-link"><img src="pic/чайник.png" alt="" class="category-image"></a>
+                <a href="${pageContext.request.contextPath}/Controller?page=searchresult&command=go_to_tag_catalog&currentPage=1&tag=clothing" class="category-link"><img src="pic/майка.png" alt="" class="category-image"></a>
                 <span class="category-name"><c:out value="${clothing}"/></span>
             </div>
             
