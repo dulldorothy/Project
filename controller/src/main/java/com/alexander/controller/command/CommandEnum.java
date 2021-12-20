@@ -2,7 +2,7 @@ package com.alexander.controller.command;
 
 import com.alexander.controller.command.impl.*;
 
-public enum Commands {
+public enum CommandEnum {
     REGISTER(new RegisterCommandImpl()),
     LOGIN(new LoginCommand()),
     GO_TO_PAGE(new GoToPageCommandImpl()),
@@ -37,7 +37,7 @@ public enum Commands {
 
     private Command command;
 
-    Commands(Command command)
+    CommandEnum(Command command)
     {
         this.command = command;
     }

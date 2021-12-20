@@ -1,6 +1,6 @@
 package com.alexander.controller.filter;
 
-import com.alexander.controller.command.Commands;
+import com.alexander.controller.command.CommandEnum;
 import com.alexander.domain.entity.UserDTO;
 
 import javax.servlet.*;
@@ -34,15 +34,15 @@ public class UserFilter implements Filter {
             session.setAttribute(LOCALE, ENGLISH);
         }
         String commandName = request.getParameter(COMMAND);
-        Commands command;
+        CommandEnum command;
         if (commandName != null) {
             try {
-                command = Commands.valueOf(commandName.toUpperCase(Locale.ROOT));
+                command = CommandEnum.valueOf(commandName.toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 command = null;
             }
         } else {
-            command = Commands.DEFAULT;
+            command = CommandEnum.DEFAULT;
         }
 
         RoleCommands roleCommand = RoleCommands.getInstance();

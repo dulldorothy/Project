@@ -3,6 +3,7 @@ package com.alexander.controller.command.impl;
 import com.alexander.controller.command.Command;
 import com.alexander.controller.command.Router;
 import com.alexander.controller.exeptions.CommandException;
+import com.alexander.service.LotsService;
 import com.alexander.service.ServiceFactory;
 import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -18,14 +19,14 @@ import static com.alexander.domain.fields.UserFields.LOT_ID;
 
 public class DeleteLotCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private final LotsService lotsService = ServiceFactory.getInstance().getLotsService();
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         Router router;
 
 
         try {
-            if (ServiceFactory.getInstance().getLotsService().deleteLotByID(Integer.parseInt(req.getParameter(LOT_ID)))) {
+            if (lotsService.deleteLotByID(Integer.parseInt(req.getParameter(LOT_ID)))) {
                 router = new Router("/Controller?page=index&command=go_to_page", Router.RouteType.REDIRECT);
             } else {
                 req.setAttribute(ERROR_MESSAGE, "Elimination error");

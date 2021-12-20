@@ -1,17 +1,17 @@
 package com.alexander.controller.filter;
 
-import com.alexander.controller.command.Commands;
+import com.alexander.controller.command.CommandEnum;
 
 import java.util.EnumSet;
 
 import static com.alexander.domain.fields.UserFields.*;
-import static com.alexander.controller.command.Commands.*;
+import static com.alexander.controller.command.CommandEnum.*;
 class RoleCommands {
     private static RoleCommands instance;
 
 
-    private final EnumSet<Commands> guestCommands = EnumSet.of(
-            Commands.DEFAULT,
+    private final EnumSet<CommandEnum> guestCommands = EnumSet.of(
+            CommandEnum.DEFAULT,
             LOGIN,
             CHANGE_LOCALE,
             GO_TO_PAGE,
@@ -21,8 +21,8 @@ class RoleCommands {
             REGISTER
     );
 
-    private final EnumSet<Commands> userCommands = EnumSet.of(
-            Commands.DEFAULT,
+    private final EnumSet<CommandEnum> userCommands = EnumSet.of(
+            CommandEnum.DEFAULT,
             LOGIN,
             CHANGE_LOCALE,
             LOGOUT,
@@ -52,8 +52,8 @@ class RoleCommands {
             DELETE_USER
     );
 
-    private final EnumSet<Commands> adminCommands = EnumSet.of(
-            Commands.DEFAULT,
+    private final EnumSet<CommandEnum> adminCommands = EnumSet.of(
+            CommandEnum.DEFAULT,
             LOGIN,
             CHANGE_LOCALE,
             LOGOUT,
@@ -94,7 +94,7 @@ class RoleCommands {
         return instance;
     }
 
-    public boolean checkCommand(String role, Commands command) {
+    public boolean checkCommand(String role, CommandEnum command) {
         switch (role) {
             case GUEST_ROLE: return guestCommands.contains(command);
             case USER_ROLE: return userCommands.contains(command);

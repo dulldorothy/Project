@@ -5,7 +5,9 @@ import com.alexander.controller.command.Router;
 import com.alexander.controller.exeptions.CommandException;
 import com.alexander.domain.entity.Page;
 import com.alexander.domain.entity.UserDTO;
+import com.alexander.service.LotsService;
 import com.alexander.service.ServiceFactory;
+import com.alexander.service.UserService;
 import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +22,7 @@ import static com.alexander.domain.fields.UserFields.*;
 
 public class GoToUserList implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private final UserService userService = ServiceFactory.getInstance().getUserService();
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         HttpSession session = req.getSession();
@@ -29,7 +31,7 @@ public class GoToUserList implements Command {
         Page<UserDTO> page;
         try {
 
-            page = ServiceFactory.getInstance().getUserService().getAllUsers(currentPage * 10, 10);
+            page = userService.getAllUsers(currentPage * 10, 10);
         } catch (ServiceException e) {
             LOGGER.error("Failed to execute User List  Command", e);
             throw new CommandException(e);

@@ -5,6 +5,7 @@ import com.alexander.controller.command.Router;
 import com.alexander.controller.exeptions.CommandException;
 import com.alexander.controller.util.Base64Coder;
 import com.alexander.domain.entity.UserDTO;
+import com.alexander.service.LotsService;
 import com.alexander.service.ServiceFactory;
 import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +25,7 @@ import static com.alexander.domain.fields.UserFields.*;
 
 public class CreateLotCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private final LotsService lotsService = ServiceFactory.getInstance().getLotsService();
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, CommandException {
         HttpSession session = request.getSession();
@@ -42,7 +43,7 @@ public class CreateLotCommand implements Command {
         }
         lotMap.put(ENCODED_IMAGE, encodedImage);
         try {
-            ServiceFactory.getInstance().getLotsService().saveLot(lotMap);
+            lotsService.saveLot(lotMap);
             return new Router("Controller?page=lotcreation&command=go_to_user_lots&currentPage=1", Router.RouteType.REDIRECT);
         } catch (ServiceException e) {
             request.setAttribute(ERROR_MESSAGE, "Incorrect fields");

@@ -20,7 +20,7 @@ public class DAOFactory {
     public LotsDAO getLotsDAO() {
         return lotsDAO;
     }
-    public static DAOFactory getInstance()
+    public static synchronized DAOFactory getInstance()
     {
         if (instance == null)
         {

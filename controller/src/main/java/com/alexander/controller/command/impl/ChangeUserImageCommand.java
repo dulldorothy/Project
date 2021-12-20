@@ -6,6 +6,7 @@ import com.alexander.controller.exeptions.CommandException;
 import com.alexander.controller.util.Base64Coder;
 import com.alexander.domain.entity.UserDTO;
 import com.alexander.service.ServiceFactory;
+import com.alexander.service.UserService;
 import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,7 @@ import static com.alexander.domain.fields.UserFields.SESSION_USER_ATR;
 
 public class ChangeUserImageCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private final UserService userService = ServiceFactory.getInstance().getUserService();
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         HttpSession session = req.getSession();
@@ -37,7 +38,7 @@ public class ChangeUserImageCommand implements Command {
         }
 
         try {
-            ServiceFactory.getInstance().getUserService().changeUserImage(user, encodedImage);
+           userService.changeUserImage(user, encodedImage);
             user.setImage(encodedImage);
             session.setAttribute(SESSION_USER_ATR, user);
             router = new Router("/Controller?page=userpage&command=go_to_page", Router.RouteType.REDIRECT);

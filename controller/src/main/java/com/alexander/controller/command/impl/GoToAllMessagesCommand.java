@@ -6,6 +6,7 @@ import com.alexander.controller.exeptions.CommandException;
 import com.alexander.domain.entity.Message;
 import com.alexander.domain.entity.Page;
 import com.alexander.domain.entity.UserDTO;
+import com.alexander.service.MessageService;
 import com.alexander.service.ServiceFactory;
 import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +23,7 @@ import static com.alexander.domain.fields.UserFields.*;
 
 public class GoToAllMessagesCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
+    private final MessageService messageService = ServiceFactory.getInstance().getMessageService();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
@@ -33,8 +35,8 @@ public class GoToAllMessagesCommand implements Command {
                 .setListOfItems(new ArrayList<>())
                 .setNumberOfPages(0).create();
         try {
-            page = ServiceFactory.getInstance().getMessageService().getAllMessages(user.getId(), 10 * (currentPage - 1), 10);
-            router = new Router(PAGE_PREV_PATH+"messages.jsp", Router.RouteType.FORWARD);
+            page = messageService.getAllMessages(user.getId(), 10 * (currentPage - 1), 10);
+            router = new Router(PAGE_PREV_PATH + "messages.jsp", Router.RouteType.FORWARD);
         } catch (ServiceException e) {
             LOGGER.error("Failed to execute go to all messages command", e);
             throw new CommandException();
