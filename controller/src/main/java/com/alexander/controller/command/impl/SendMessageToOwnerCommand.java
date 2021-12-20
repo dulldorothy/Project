@@ -4,7 +4,9 @@ import com.alexander.controller.command.Command;
 import com.alexander.controller.command.Router;
 import com.alexander.controller.exeptions.CommandException;
 import com.alexander.domain.entity.UserDTO;
+import com.alexander.service.MessageService;
 import com.alexander.service.ServiceFactory;
+import com.alexander.service.UserService;
 import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +21,7 @@ import static com.alexander.domain.fields.UserFields.*;
 
 public class SendMessageToOwnerCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private final MessageService messageService = ServiceFactory.getInstance().getMessageService();
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         Router router = new Router("/Controller?page=error&command=error_page", Router.RouteType.REDIRECT);
@@ -28,7 +30,7 @@ public class SendMessageToOwnerCommand implements Command {
         int lotID = Integer.parseInt(req.getParameter(LOT_ID));
         int ownerID = Integer.parseInt(req.getParameter(OWNER_ID));
         try {
-            ServiceFactory.getInstance().getMessageService().sendMessage(ownerID, user.getId(), lotID);
+            messageService.sendMessage(ownerID, user.getId(), lotID);
             router = new Router("/Controller?page=userpage&command=go_to_page", Router.RouteType.REDIRECT);
         } catch (ServiceException e) {
             LOGGER.error("Failed to send message to owner", e);

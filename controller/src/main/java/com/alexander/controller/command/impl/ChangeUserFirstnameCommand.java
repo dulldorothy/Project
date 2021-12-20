@@ -4,7 +4,9 @@ import com.alexander.controller.command.Command;
 import com.alexander.controller.command.Router;
 import com.alexander.controller.exeptions.CommandException;
 import com.alexander.domain.entity.UserDTO;
+import com.alexander.service.LotsService;
 import com.alexander.service.ServiceFactory;
+import com.alexander.service.UserService;
 import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +22,7 @@ import static com.alexander.domain.fields.UserFields.SESSION_USER_ATR;
 
 public class ChangeUserFirstnameCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private final UserService userService = ServiceFactory.getInstance().getUserService();
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         Router router = new Router("/Controller?page=error&command=error_page", Router.RouteType.REDIRECT);
@@ -28,7 +30,7 @@ public class ChangeUserFirstnameCommand implements Command {
         UserDTO user = (UserDTO) session.getAttribute(SESSION_USER_ATR);
         String firstname = req.getParameter(FIRSTNAME);
         try {
-            ServiceFactory.getInstance().getUserService().changeUserFirstName(user, firstname);
+            userService.changeUserFirstName(user, firstname);
             user.setFirstName(firstname);
             session.setAttribute(SESSION_USER_ATR, user);
             router = new Router("/Controller?page=userpage&command=go_to_page", Router.RouteType.REDIRECT);

@@ -67,7 +67,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
         return usedConnections.remove(connection);
     }
 
-    public static ConnectionPool getInstance() {
+    public static synchronized ConnectionPool getInstance() {
         if (instance == null) {
             instance = new ConnectionPoolImpl();
         }

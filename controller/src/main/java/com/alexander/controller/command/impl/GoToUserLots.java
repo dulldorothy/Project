@@ -6,6 +6,7 @@ import com.alexander.controller.exeptions.CommandException;
 import com.alexander.domain.entity.Lot;
 import com.alexander.domain.entity.Page;
 import com.alexander.domain.entity.UserDTO;
+import com.alexander.service.LotsService;
 import com.alexander.service.ServiceFactory;
 import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +22,7 @@ import static com.alexander.domain.fields.UserFields.*;
 
 public class GoToUserLots implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
+    private final LotsService lotsService = ServiceFactory.getInstance().getLotsService();
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
         HttpSession session = req.getSession();
@@ -29,7 +31,7 @@ public class GoToUserLots implements Command {
         Page<Lot> page;
         try {
 
-            page = ServiceFactory.getInstance().getLotsService().getAllUserLots(currentPage * 10, 10, user.getId());
+            page = lotsService.getAllUserLots(currentPage * 10, 10, user.getId());
         } catch (ServiceException e) {
             LOGGER.error("Failed to execute FullCatalog  Command", e);
             throw new CommandException(e);

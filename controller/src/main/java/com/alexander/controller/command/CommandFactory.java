@@ -18,15 +18,17 @@ public class CommandFactory {
         return commandFactory;
     }
 
+    private CommandFactory(){
 
+    }
 
     public Command createCommand(HttpServletRequest request) throws CommandException {
         String commandName = request.getParameter(COMMAND);
-        Command command = Commands.ERROR_PAGE.getCommand();
+        Command command = CommandEnum.ERROR_PAGE.getCommand();
         if (commandName != null && !commandName.equals(EMPTY_STRING))
         {
             try{
-                command = Commands.valueOf(commandName.toUpperCase(Locale.ROOT)).getCommand();
+                command = CommandEnum.valueOf(commandName.toUpperCase(Locale.ROOT)).getCommand();
             }catch (IllegalArgumentException e )
             {
              throw new CommandException(e);

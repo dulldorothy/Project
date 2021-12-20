@@ -5,6 +5,7 @@ import com.alexander.controller.command.Router;
 import com.alexander.controller.exeptions.CommandException;
 import com.alexander.domain.entity.UserDTO;
 import com.alexander.service.ServiceFactory;
+import com.alexander.service.UserService;
 import com.alexander.service.exeption.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +20,7 @@ import static com.alexander.domain.fields.UserFields.*;
 
 public class DeleteUserCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
+    private final UserService userService = ServiceFactory.getInstance().getUserService();
 
     @Override
     public Router execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, CommandException {
@@ -28,7 +30,7 @@ public class DeleteUserCommand implements Command {
         int deleteID = Integer.parseInt(req.getParameter(DELETE_ID));
         if (user.getRole().equals(ADMIN_ROLE)) {
             try {
-                ServiceFactory.getInstance().getUserService().deleteUserByID(deleteID);
+                userService.deleteUserByID(deleteID);
                 return new Router("/Controller?page=userlist&command=go_to_user_list&currentPage=1", Router.RouteType.REDIRECT);
             } catch (ServiceException e) {
 
