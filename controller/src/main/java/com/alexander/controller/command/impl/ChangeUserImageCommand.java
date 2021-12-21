@@ -19,8 +19,7 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.alexander.domain.fields.UserFields.IMAGE;
-import static com.alexander.domain.fields.UserFields.SESSION_USER_ATR;
+import static com.alexander.domain.fields.UserFields.*;
 
 public class ChangeUserImageCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -45,7 +44,8 @@ public class ChangeUserImageCommand implements Command {
 
         } catch (ServiceException e) {
             LOGGER.error("Failed to change user image", e);
-            throw new CommandException();
+            req.setAttribute(ERROR_MESSAGE,"Incorrect fields");
+            router = new Router("/Controller?page=userpage&command=go_to_page", Router.RouteType.REDIRECT);
         }
         return router;
     }

@@ -35,14 +35,14 @@
             </div>
             <div class="profile-info-container">
                 
-                <p><c:out value="${firstname}"/>: ${sessionScope.user.userName}</p>
+                <p><c:out value="${firstname}"/>: ${sessionScope.user.firstName}</p>
                
                 <form action="/Controller" method="post">
                     <input type="hidden" name="command" value="change_user_firstname"/>
                     <input type="text" name="firstname" value="${sessionScope.user.firstName}"/>
                     <button type="submit"> <c:out value="${change}"/></button>
                 </form>
-                <p><c:out value="${lastname}"/>: ${sessionScope.user.firstName}</p>
+                <p><c:out value="${lastname}"/>: ${sessionScope.user.lastName}</p>
                 <form action="/Controller" method="post">
                     <input type="hidden" name="command" value="change_user_lastname"/>
                     <input type="text" name="lastname" value="${sessionScope.user.lastName}"/>

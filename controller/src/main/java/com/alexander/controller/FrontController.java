@@ -41,7 +41,7 @@ public class FrontController extends HttpServlet {
         try {
             doExecute(req, resp);
         } catch (CommandException e) {
-            e.printStackTrace();
+                e.printStackTrace();
         }
     }
 

@@ -16,8 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static com.alexander.domain.fields.UserFields.LASTNAME;
-import static com.alexander.domain.fields.UserFields.SESSION_USER_ATR;
+import static com.alexander.domain.fields.UserFields.*;
 
 public class ChangeUserLastnameCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -35,7 +34,8 @@ public class ChangeUserLastnameCommand implements Command {
             router = new Router("/Controller?page=userpage&command=go_to_page", Router.RouteType.REDIRECT);
         } catch (ServiceException e) {
             LOGGER.error("Failed to chage user lastname", e);
-            throw new CommandException();
+            req.setAttribute(ERROR_MESSAGE,"Incorrect fields");
+            router = new Router("/Controller?page=userpage&command=go_to_page", Router.RouteType.REDIRECT);
         }
         return router;
     }

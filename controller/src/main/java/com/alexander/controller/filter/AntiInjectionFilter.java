@@ -25,7 +25,7 @@ public class AntiInjectionFilter implements Filter {
         if (sb.toString().trim().matches(DOES_NOT_CONTAIN)) {
             chain.doFilter(req, res);
         } else {
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response); //todo
+            request.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(request, response);
         }
     }
 

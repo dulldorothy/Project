@@ -15,7 +15,13 @@ public class ServiceValidator {
                 EMPTY_STRING.equals(user.getRole()) ||
                 EMPTY_STRING.equals(user.getLastName()) ||
                 EMPTY_STRING.equals(user.getEmail()) ||
-                EMPTY_STRING.equals(user.getFirstName())) {
+                EMPTY_STRING.equals(user.getFirstName())
+                || user.getPassword() == null
+                || user.getUserName() == null
+                || user.getRole() == null
+                || user.getLastName() == null
+                || user.getEmail() == null
+                || user.getFirstName() == null) {
             throw new ServiceException("Validation failed");
         }
 
@@ -34,13 +40,10 @@ public class ServiceValidator {
     public static void validate(String... string) throws ServiceException {
         for (String str : string
         ) {
-            if (EMPTY_STRING.equals(str)) {
+            if (EMPTY_STRING.equals(str) || str == null) {
                 throw new ServiceException("Validation failed");
             }
 
-        }
-        if (EMPTY_STRING.equals(string)) {
-            throw new ServiceException("Validation failed");
         }
     }
 

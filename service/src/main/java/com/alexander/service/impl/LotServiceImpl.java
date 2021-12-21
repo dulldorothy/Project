@@ -123,7 +123,7 @@ public class LotServiceImpl implements LotsService {
     @Override
     public boolean saveLot(Map<String, String> lotMap) throws ServiceException {
         Lot lot = new Lot.LotBuilder()
-                .setPrice(Integer.parseInt(lotMap.get(PRICE)))
+                .setPrice((int) Math.floor(Double.parseDouble(lotMap.get(PRICE)) * 100))
                 .setTitle(lotMap.get(TITLE))
                 .setUserOwnerID(Integer.parseInt(lotMap.get(OWNER_ID)))
                 .setDescription(lotMap.get(DESCRIPTION))

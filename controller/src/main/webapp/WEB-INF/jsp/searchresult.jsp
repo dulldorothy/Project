@@ -22,7 +22,7 @@
                             </div>
                             <div class="desc_part">
                                <a href="${pageContext.request.contextPath}/Controller?lot_id=${Lot.id}&command=go_to_lot_page"> ${Lot.title}</a>
-                                <h2>${Lot.price} $</h2>
+                                <h2>${Lot.price/100} $</h2>
                                 <h2>${Lot.id} id</h2> 
                             </div>
                         </div>

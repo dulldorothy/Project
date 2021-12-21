@@ -32,12 +32,12 @@
             <button type="submit"> <c:out value="${change}"/></button>
         </form>
     </c:if>
-    <h2>${requestScope.Lot.price}</h2>
+    <h2>${requestScope.Lot.price/100} $</h2>
     <c:if test="${sessionScope.user.id == requestScope.Lot.userOwnerID}">
         <form action="/Controller" method="post">
             <input type="hidden" name="command" value="change_lot_price"/>
             <input type="hidden" name="lot_id" value="${requestScope.Lot.id}"/>
-            <input type="number" name="price" value="${requestScope.Lot.price}"/>
+            <input type="number" step="0.01" name="price" value="${requestScope.Lot.price/100}"/>
             <button type="submit"> <c:out value="${change}"/></button>
         </form>
     </c:if>
@@ -49,7 +49,7 @@
         <c:when test="${sessionScope.user.role == 'guest'}">
         </c:when>
         <c:otherwise>
-            <form method="get" action="Controller">
+            <form method="post" action="Controller">
                 <input type="hidden" name="command" value="add_to_bookmark" >
                 <input type="hidden" name="lot_id" value="${requestScope.Lot.id}" >
                 <button type="submit"> <c:out value="${bookmark}"/> </button>

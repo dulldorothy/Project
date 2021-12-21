@@ -26,7 +26,7 @@ public class ChangeLotPriceCommand implements Command {
         Router router = new Router("/Controller?page=error&command=error_page", Router.RouteType.REDIRECT);
         HttpSession session = req.getSession();
         int lotID = Integer.parseInt(req.getParameter(LOT_ID));
-        int price = Integer.parseInt(req.getParameter(PRICE));
+        int price = (int) Math.floor(Double.valueOf(req.getParameter(PRICE))*100);
         try {
             lotsService.changeLotPriceByID(lotID, price);
             router = new Router("/Controller?lot_id=" + lotID + "&command=go_to_lot_page", Router.RouteType.REDIRECT);
